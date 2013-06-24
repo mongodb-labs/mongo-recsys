@@ -2,7 +2,11 @@ package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -13,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
+
+import classes.ValueComparator;
 
 import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObject;
@@ -36,6 +42,7 @@ public class Recommend extends HttpServlet {
 	 */
 	private static String databaseName = "daviddb";
 	private static String itemCollection = "movies";
+	private static int numberOfRecommendations = 5;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -144,22 +151,50 @@ public class Recommend extends HttpServlet {
 		BasicDBObject filter = new BasicDBObject();
 		filter.append("$match", new BasicDBObject("favorites", new BasicDBObject("$nin", mainFavorites)));
 		BasicDBObject sort = new BasicDBObject();
-		sort.append("$sort", new BasicDBObject("occurrances", 1).append("movie_id", 1));
-		BasicDBObject limit = new BasicDBObject();
-		limit.append("$limit", 5);
-		AggregationOutput output = similar.aggregate(unwind, filter, sort, limit);
+		sort.append("$sort", new BasicDBObject("score", 1).append("movie_id", 1));
+		
+		AggregationOutput output = similar.aggregate(unwind, filter, sort);
+		
+		// Declare the HashMap and TreeMap we need.
+		HashMap<String, Integer> similarUsers = new HashMap<String, Integer>();
+		ValueComparator bvc = new ValueComparator(similarUsers);
+        TreeMap<String, Integer> sortedSimilarUsers = new TreeMap<String, Integer>(bvc);
 				
 		// Use the Iterator to traverse the collection.
 		for (DBObject obj : output.results()) {
-			int movieNum = Integer.parseInt(obj.get("favorites").toString());
-			
-			// Do a check to make sure we don't recommend movies already on the user's favorites list.
-			
+			int movieNum = Integer.parseInt(obj.get("favorites").toString());	
+			int score = Integer.parseInt(obj.get("score").toString());
 			BasicDBObject query = new BasicDBObject("movie_id", movieNum);
 			DBObject recommendation = items.findOne(query);
-		    System.out.println("We believe you might enjoy: " + recommendation.get("title").toString());
-		    result += recommendation.get("title").toString() + "<br>";
+						
+			// Put the recommendation into a HashMap.
+			String title = recommendation.get("title").toString();
+			
+			System.out.println(score);
+			
+			if(similarUsers.containsKey(title)) {
+				int currentScore = similarUsers.get(title);
+				similarUsers.put(title, currentScore + score);
+			} else {
+				similarUsers.put(title, score);
+			}
 		}
+		
+		sortedSimilarUsers.putAll(similarUsers);
+		
+		// Iterate through the HashMap and add the best options.
+		@SuppressWarnings("rawtypes")
+		Iterator it = sortedSimilarUsers.entrySet().iterator();
+		int counter = 0;
+		while(it.hasNext()) {
+			if(counter >= numberOfRecommendations) break;
+			@SuppressWarnings("unchecked")
+			Map.Entry<String,Integer> pairs = (Map.Entry<String,Integer>)it.next();
+			result += pairs.getKey() + "<br>";
+			counter++;
+		}
+		
+		System.out.println(sortedSimilarUsers);
 		
 		return result;
 	}
@@ -195,9 +230,9 @@ public class Recommend extends HttpServlet {
 				// Make sure we don't add the main user to the collection.
 				if(!(currentObject.get("_id").toString().equals(mainUserObject.get("_id").toString()))) {
 					
-					// Upsert with an increment to the occurances field.
+					// Upsert with an increment to the score field.
 					BasicDBObject increment = new BasicDBObject();
-					increment.append("$inc", new BasicDBObject().append("occurances", 1));
+					increment.append("$inc", new BasicDBObject().append("score", 1));
 					
 					// I've set it so upsert = true and multi = false.
 					similarUsers.update(currentObject, increment, true, false);
@@ -209,7 +244,7 @@ public class Recommend extends HttpServlet {
 	
 	/*
 	 * Helper String: getMainUserFavorites
-	 * ----------------------------
+	 * -----------------------------------
 	 * Gets the main user's favorite items and formats them.
 	 */
 	private String getMainUserFavorites(DBObject mainUserObject, DBCollection data,
