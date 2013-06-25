@@ -86,10 +86,6 @@ public class Recommend extends HttpServlet {
 		DBCursor cur = coll.find(mainUserQuery.get());
 		DBObject mainUserObject = cur.next();
 
-		// Prints the username and ID number. For testing purposes.
-		// System.out.println(mainUserObject.get("_id"));
-		// System.out.println(mainUserObject.get("user"));
-
 		// Grab the user's array from the user object.
 		BasicBSONList arr = (BasicBSONList) mainUserObject.get("favorites");
 
@@ -170,8 +166,6 @@ public class Recommend extends HttpServlet {
 			// Put the recommendation into a HashMap.
 			String title = recommendation.get("title").toString();
 
-			System.out.println(score);
-
 			if(similarUsers.containsKey(title)) {
 				int currentScore = similarUsers.get(title);
 				similarUsers.put(title, currentScore + score);
@@ -193,8 +187,6 @@ public class Recommend extends HttpServlet {
 			result += pairs.getKey() + "<br>";
 			counter++;
 		}
-
-		System.out.println(sortedSimilarUsers);
 
 		return result;
 	}

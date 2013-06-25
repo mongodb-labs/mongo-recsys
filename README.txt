@@ -29,4 +29,4 @@ in ways detailed below:
 
 Specifications
 ==============
-The application is a Java webserver using Apache Tomcat v7.0.
+The application is a Java webserver using Apache Tomcat v7.0. Skeleton CSS is used for styling.
