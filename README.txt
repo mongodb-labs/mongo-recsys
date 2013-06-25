@@ -14,17 +14,15 @@ The included example is a small dataset of 10gen's interns and their favorite mo
 Based upon a user's top films, Recommender extracts relations to other people who share
 one or more films with that user, then uses a scoring algorithm to recommend new movies.
 Algorithms like this are extremely common in the real world, with the most notable example
-being Amazon.com's product recommendation system, which is said to net them multiple billions
-in revenue each year.
+being Amazon.com's product recommendation system, which is said to net them multiple billions in revenue each year.
 
 How MongoDB Fits In
 ===================
-This application showcases MongoDB's flexibility and power. MongoDB is used heavily in the app,
-in ways detailed below:
+This application showcases MongoDB's flexibility and power. MongoDB is used heavily in the app, in ways detailed below:
 	- MongoImport --jsonarray for user data allows easy import of JSON data.
-	- Java tokenizes a .dsv file of movies and builds a collection using the Java driver.
-	- MongoDB's aggregation feature is used to choose candidate items for recommendation.
-	- The QueryBuilder, again from the Java driver, is used to retrieve data from Mongo.
+	- Java driver is used to read a .dsv file into a collection.
+	- Aggregation is used to choose candidate items for recommendation.
+	- The QueryBuilder (Java driver) is used to retrieve data from Mongo.
 	- Java driver natively used to modify documents currently stored in the DB.
 
 Specifications
