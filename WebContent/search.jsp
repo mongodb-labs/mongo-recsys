@@ -4,10 +4,13 @@
 		import="com.mongodb.*,java.util.*,java.io.PrintWriter,org.bson.types.ObjectId;"
 	%>
 
-	<p>
+	<div class="container" align="center">
+	<div class ="offset-by-six">
+	<div class="four columns">
 		Please select the user for which you would like to generate recommendations
 		then click the "Recommend" button to run the engine.
-	</p>
+	<br>
+	<br>
 	
 	<%
 			// Grab the MongoClient from the ServletContext.
@@ -31,6 +34,7 @@
 			}
 	%>
 	
+	<div align=center>
 	<form method="post" action="Recommend">
     	<select name="user">
         	<%
@@ -41,7 +45,11 @@
     	</select>
     <INPUT TYPE="submit" name="submit" />
 	</form>
-	
 	<p>${message}</p>
+	</div>
+	</div>
+	</div>
+	
+	</div>
 	
 <%@include file="templates/footer.jsp" %>
