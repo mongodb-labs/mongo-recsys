@@ -36,33 +36,39 @@ import com.mongodb.QueryBuilder;
 public class Recommend extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-
 	/*
-	 * Class variables. These can be changed to alter the recommendation algorithm.
+	 * Class variables. These can be changed to alter the values used in the algorithm.
 	 */
 	private static String databaseName = "daviddb";
 	private static String itemCollection = "movies";
 	private static int numberOfRecommendations = 5;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public Recommend() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+	public Recommend() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+	}
+
+	/*
+	 * Response: doPost
+	 * ----------------
+	 * Upon POST, run the recommendation algorithm and return the user's
+	 * favorite items as well as a list of numberOfRecommendations more
+	 * that they might enjoy.
+	 */
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 
 		// Grab the MongoClient from the ServletContext.
 		ServletContext context = request.getSession().getServletContext();
@@ -79,7 +85,7 @@ public class Recommend extends HttpServlet {
 		ObjectId mainId = new ObjectId(user);
 		mainUser.put("_id", mainId);
 
-		// Using the _id we build a query and retrieve the appropriate user object.
+		// Using the _id we build a query and retrieve the appropriate object.
 		DBCollection coll = db.getCollection("users");
 		QueryBuilder mainUserQuery = new QueryBuilder();
 		mainUserQuery.put("_id").is(mainUser.get("_id"));
@@ -103,13 +109,15 @@ public class Recommend extends HttpServlet {
 	 * Creates the message that is dispatched to search.jsp in the doPost function.
 	 * Includes much of the algorithmic work.
 	 */
-	private String createRecommendation(DB db, DBObject mainUserObject, BasicBSONList arr) {
+	private String createRecommendation(DB db, DBObject mainUserObject,
+			BasicBSONList arr) {
 
 		// Basic set-up operations for the message and collections.
 		DBCollection dataColl = db.getCollection(itemCollection);
 		DBCollection userColl = db.getCollection("users");
-		String mainUserFavorites = "Favorites list for " + mainUserObject.get("user") + ":<br>" +
-		getMainUserFavorites(mainUserObject, dataColl, userColl, arr);
+		String mainUserFavorites = "Favorites list for "
+				+ mainUserObject.get("user") + ":<br>"
+				+ getMainUserFavorites(mainUserObject, dataColl, userColl, arr);
 		String message = mainUserFavorites;
 
 		// Get all of the users similar to our main user. This will be changed.
@@ -145,20 +153,23 @@ public class Recommend extends HttpServlet {
 		BasicDBObject unwind = new BasicDBObject();
 		unwind.append("$unwind", "$favorites");
 		BasicDBObject filter = new BasicDBObject();
-		filter.append("$match", new BasicDBObject("favorites", new BasicDBObject("$nin", mainFavorites)));
+		filter.append("$match", new BasicDBObject("favorites",
+				new BasicDBObject("$nin", mainFavorites)));
 		BasicDBObject sort = new BasicDBObject();
-		sort.append("$sort", new BasicDBObject("score", 1).append("movie_id", 1));
+		sort.append("$sort",
+				new BasicDBObject("score", 1).append("movie_id", 1));
 
 		AggregationOutput output = similar.aggregate(unwind, filter, sort);
 
 		// Declare the HashMap and TreeMap we need.
 		HashMap<String, Integer> similarUsers = new HashMap<String, Integer>();
 		ValueComparator bvc = new ValueComparator(similarUsers);
-        TreeMap<String, Integer> sortedSimilarUsers = new TreeMap<String, Integer>(bvc);
+		TreeMap<String, Integer> sortedSimilarUsers = new TreeMap<String, Integer>(
+				bvc);
 
 		// Use the Iterator to traverse the collection.
 		for (DBObject obj : output.results()) {
-			int movieNum = Integer.parseInt(obj.get("favorites").toString());	
+			int movieNum = Integer.parseInt(obj.get("favorites").toString());
 			int score = Integer.parseInt(obj.get("score").toString());
 			BasicDBObject query = new BasicDBObject("movie_id", movieNum);
 			DBObject recommendation = items.findOne(query);
@@ -166,7 +177,7 @@ public class Recommend extends HttpServlet {
 			// Put the recommendation into a HashMap.
 			String title = recommendation.get("title").toString();
 
-			if(similarUsers.containsKey(title)) {
+			if (similarUsers.containsKey(title)) {
 				int currentScore = similarUsers.get(title);
 				similarUsers.put(title, currentScore + score);
 			} else {
@@ -180,10 +191,12 @@ public class Recommend extends HttpServlet {
 		@SuppressWarnings("rawtypes")
 		Iterator it = sortedSimilarUsers.entrySet().iterator();
 		int counter = 0;
-		while(it.hasNext()) {
-			if(counter >= numberOfRecommendations) break;
+		while (it.hasNext()) {
+			if (counter >= numberOfRecommendations)
+				break;
 			@SuppressWarnings("unchecked")
-			Map.Entry<String,Integer> pairs = (Map.Entry<String,Integer>)it.next();
+			Map.Entry<String, Integer> pairs = (Map.Entry<String, Integer>) it
+					.next();
 			result += pairs.getKey() + "<br>";
 			counter++;
 		}
@@ -194,37 +207,41 @@ public class Recommend extends HttpServlet {
 	/*
 	 * Helper Function: buildSimilarUsersCollection
 	 * --------------------------------------------
-	 * This function puts the similar users into their
-	 * own collection, which will make it easier to use
-	 * MongoDB's aggregation functions.
+	 * This function puts the similar users into their own collection,
+	 * which will make it easier to use MongoDB's aggregation functions.
 	 */
-	private void buildSimilarCollection(DB db, DBCollection userColl, DBObject mainUserObject) {
+	private void buildSimilarCollection(DB db, DBCollection userColl,
+			DBObject mainUserObject) {
 
 		// Get the new collection and retrieve the array of favorites.
 		DBCollection similarUsers = db.getCollection("similar");
 		BasicBSONList arr = (BasicBSONList) mainUserObject.get("favorites");
 
-		// This algorithm checks which users also list one of mainUser's movies among their favorites.
-		for(int i = 0; i < arr.size(); i++) {
+		// This algorithm checks which users also list one of mainUser's movies
+		// among their favorites.
+		for (int i = 0; i < arr.size(); i++) {
 
 			// Find users who share common movies with the mainUser.
 			List<Integer> list = new ArrayList<Integer>();
 			list.add(Integer.parseInt(arr.get(i).toString()));
-			BasicDBObject query = new BasicDBObject("favorites", new BasicDBObject("$in", list));
+			BasicDBObject query = new BasicDBObject("favorites",
+					new BasicDBObject("$in", list));
 			DBCursor cur = userColl.find(query);
 
 			// Add these similar users into the database.
-			while(cur.hasNext()) {
+			while (cur.hasNext()) {
 
 				// This is the item we have here.
 				DBObject currentObject = cur.next();
 
 				// Make sure we don't add the main user to the collection.
-				if(!(currentObject.get("_id").toString().equals(mainUserObject.get("_id").toString()))) {
+				if (!(currentObject.get("_id").toString().equals(mainUserObject
+						.get("_id").toString()))) {
 
 					// Upsert with an increment to the score field.
 					BasicDBObject increment = new BasicDBObject();
-					increment.append("$inc", new BasicDBObject().append("score", 1));
+					increment.append("$inc",
+							new BasicDBObject().append("score", 1));
 
 					// I've set it so upsert = true and multi = false.
 					similarUsers.update(currentObject, increment, true, false);
@@ -239,11 +256,12 @@ public class Recommend extends HttpServlet {
 	 * -----------------------------------
 	 * Gets the main user's favorite items and formats them.
 	 */
-	private String getMainUserFavorites(DBObject mainUserObject, DBCollection data,
-										DBCollection users, BasicBSONList arr) {
+	private String getMainUserFavorites(DBObject mainUserObject,
+			DBCollection data, DBCollection users, BasicBSONList arr) {
 		String message = "";
+		
 		// This puts all of the mainUser's favorite items into the message.
-		for(int i = 0; i < arr.size(); i++) {
+		for (int i = 0; i < arr.size(); i++) {
 			QueryBuilder q = new QueryBuilder();
 			q.put("movie_id").is(arr.get(i));
 			DBCursor cur = data.find(q.get());

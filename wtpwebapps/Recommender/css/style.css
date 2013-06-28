@@ -1,0 +1,17 @@
+body {
+	font-family: "Sabon", "SabonGreek";
+	font-size:12pt;
+	text-align:center;
+	margin-left:1cm;
+}
+
+h1 {
+	color:#336600;
+}
+
+select {
+	font-size: 1.1em; /* Size of the text */
+	height: 41px; /* The height you want the <select> to be */
+	padding-top: 7px; /* how far from the top you want the text to appear */
+	text-align:center;
+}
