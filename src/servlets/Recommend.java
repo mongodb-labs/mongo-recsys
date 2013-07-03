@@ -1,5 +1,9 @@
 package servlets;
 
+import static classes.Constants.databaseName;
+import static classes.Constants.itemCollection;
+import static classes.Constants.numberOfRecommendations;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.bson.types.BasicBSONList;
-import org.bson.types.ObjectId;
 
 import classes.ValueComparator;
 
@@ -29,6 +32,7 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.QueryBuilder;
 
+
 /**
  * Servlet implementation class Recommend
  */
@@ -37,32 +41,50 @@ public class Recommend extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/*
-	 * Class variables. These can be changed to alter the values used in the algorithm.
-	 */
-	private static String databaseName = "daviddb";
-	private static String itemCollection = "movies";
-	private static int numberOfRecommendations = 5;
-
-	/**
-	 * @see HttpServlet#HttpServlet()
+	 * Constructor: Recommend
+	 * ----------------------
+	 * Invokes the parent class' constructor.
 	 */
 	public Recommend() {
 		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 	/*
-	 * Response: doPost
-	 * ----------------
+	 * HTTP Method: doGet
+	 * ------------------
+	 * Used by home.jsp to redirect the user to search.jsp, passing the unique_id as well.
+	 * This method also gets the 
+	 */
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		
+		// Grab the MongoClient from the ServletContext.
+		ServletContext context = request.getSession().getServletContext();
+
+		// Grab the MongoClient, the database, and the collection.
+		MongoClient m = (MongoClient) context.getAttribute("mongo");
+		DB db = m.getDB(databaseName);
+		DBCollection coll = db.getCollection(itemCollection);
+
+		// Get the unique genres.
+		BasicBSONList arr = (BasicBSONList) coll.distinct("genre");
+
+		// Iterate through the collection and put the names of every user in an ArrayList.
+		ArrayList<String> genres = new ArrayList<String>();
+		for (int i = 0; i < arr.size(); i++) {
+			genres.add(arr.get(i).toString());
+		}
+		
+		String unique_id = request.getParameter("unique_id");
+		request.setAttribute("genres", genres);
+		request.setAttribute("unique_id", unique_id);
+		request.getRequestDispatcher("search.jsp").forward(request, response);
+
+	}
+
+	/*
+	 * HTTP Method: doPost
+	 * -------------------
 	 * Upon POST, run the recommendation algorithm and return the user's
 	 * favorite items as well as a list of numberOfRecommendations more
 	 * that they might enjoy.
@@ -70,27 +92,33 @@ public class Recommend extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		// Grab the MongoClient from the ServletContext.
+		// Grab the ServletContext.
 		ServletContext context = request.getSession().getServletContext();
 
-		// Grab the MongoClient and create a database.
+		// Grab the MongoClient and create a database or get it if it already exists.
 		MongoClient m = (MongoClient) context.getAttribute("mongo");
 		DB db = m.getDB(databaseName);
 
-		// Get information from the request.
-		String user = request.getParameter("user");
-
-		// Set up a user BasicDBObject to be user in the query.
+		// Get user information from the request.
+		String unique_id = request.getParameter("unique_id");
+		
+		// Quick check to see if the user is logged in.
+		if(unique_id == null) {
+			String message = "Please login.";
+			request.setAttribute("message", message);
+			request.getRequestDispatcher("login.jsp").forward(request, response);
+			return;
+		}
+		
+		// Set up a user object to represent the user in the query.
 		BasicDBObject mainUser = new BasicDBObject();
-		ObjectId mainId = new ObjectId(user);
-		mainUser.put("_id", mainId);
+		mainUser.put("unique_id", unique_id);
 
-		// Using the _id we build a query and retrieve the appropriate object.
+		// Retrieve the appropriate user object from the collection.
 		DBCollection coll = db.getCollection("users");
 		QueryBuilder mainUserQuery = new QueryBuilder();
-		mainUserQuery.put("_id").is(mainUser.get("_id"));
-		DBCursor cur = coll.find(mainUserQuery.get());
-		DBObject mainUserObject = cur.next();
+		mainUserQuery.put("unique_id").is(unique_id);
+		DBObject mainUserObject = coll.findOne(mainUserQuery.get());
 
 		// Grab the user's array from the user object.
 		BasicBSONList arr = (BasicBSONList) mainUserObject.get("favorites");
@@ -99,20 +127,23 @@ public class Recommend extends HttpServlet {
 		String message = createRecommendation(db, mainUserObject, arr);
 
 		// Set the value of the message and dispatch to the JSP.
+		request.setAttribute("unique_id", unique_id);
 		request.setAttribute("message", message);
-		request.getRequestDispatcher("search.jsp").forward(request, response);
+		request.getRequestDispatcher("home.jsp").forward(request, response);
 	}
 
 	/*
 	 * String: createRecommendation
 	 * ---------------------
 	 * Creates the message that is dispatched to search.jsp in the doPost function.
-	 * Includes much of the algorithmic work.
+	 * Calls buildSimilarCollection as well as identifyTopMovies, which get a list
+	 * of users with similar preferences then construct a list of most recommended
+	 * movies respectively.
 	 */
 	private String createRecommendation(DB db, DBObject mainUserObject,
 			BasicBSONList arr) {
 
-		// Basic set-up operations for the message and collections.
+		// Basic setup operations for the message and collections.
 		DBCollection dataColl = db.getCollection(itemCollection);
 		DBCollection userColl = db.getCollection("users");
 		String mainUserFavorites = "Favorites list for "
@@ -123,7 +154,7 @@ public class Recommend extends HttpServlet {
 		// Get all of the users similar to our main user. This will be changed.
 		buildSimilarCollection(db, userColl, mainUserObject);
 
-		// Find the top five candidate movies for the mainUser.
+		// Find the top numberOfRecommendations candidate movies for the mainUser.
 		String recommended = identifyTopMovies(db, mainUserObject);
 		message += "<br>Recommended Films:<br>" + recommended;
 
@@ -176,7 +207,8 @@ public class Recommend extends HttpServlet {
 
 			// Put the recommendation into a HashMap.
 			String title = recommendation.get("title").toString();
-
+			
+			// Increment the score of a particular movie as needed.
 			if (similarUsers.containsKey(title)) {
 				int currentScore = similarUsers.get(title);
 				similarUsers.put(title, currentScore + score);
@@ -184,7 +216,8 @@ public class Recommend extends HttpServlet {
 				similarUsers.put(title, score);
 			}
 		}
-
+		
+		// Sorts the HashMap by putting it into the TreeMap.
 		sortedSimilarUsers.putAll(similarUsers);
 
 		// Iterate through the HashMap and add the best options.
@@ -207,8 +240,9 @@ public class Recommend extends HttpServlet {
 	/*
 	 * Helper Function: buildSimilarUsersCollection
 	 * --------------------------------------------
-	 * This function puts the similar users into their own collection,
-	 * which will make it easier to use MongoDB's aggregation functions.
+	 * This function puts the users with similar preferences to the main
+	 * user into their own collection, which will make it easier to use
+	 * MongoDB's aggregation framework.
 	 */
 	private void buildSimilarCollection(DB db, DBCollection userColl,
 			DBObject mainUserObject) {
@@ -243,7 +277,7 @@ public class Recommend extends HttpServlet {
 					increment.append("$inc",
 							new BasicDBObject().append("score", 1));
 
-					// I've set it so upsert = true and multi = false.
+					// I've set upsert = true and multi = false.
 					similarUsers.update(currentObject, increment, true, false);
 
 				}
@@ -255,6 +289,8 @@ public class Recommend extends HttpServlet {
 	 * Helper String: getMainUserFavorites
 	 * -----------------------------------
 	 * Gets the main user's favorite items and formats them.
+	 * All this function does is to pull the favorites array
+	 * from the user object and make it readable as a String.
 	 */
 	private String getMainUserFavorites(DBObject mainUserObject,
 			DBCollection data, DBCollection users, BasicBSONList arr) {

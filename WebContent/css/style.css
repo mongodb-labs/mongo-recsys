@@ -9,6 +9,25 @@ h1 {
 	color:#336600;
 }
 
+h5 {
+	font-size: 22px;
+	color:black;
+}
+
+h6 {
+	font-size: 20px;
+	color:black;
+}
+
+h6 {
+	font-size: 18px;
+	color:black;
+}
+
+#smallheader {
+	color:#336600;
+}
+
 select {
 	font-size: 1.1em; /* Size of the text */
 	height: 41px; /* The height you want the <select> to be */
