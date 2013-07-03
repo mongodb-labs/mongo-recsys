@@ -19,8 +19,7 @@ being Amazon.com's product recommendation system, which is said to net them mult
 How MongoDB Fits In
 ===================
 This application showcases MongoDB's flexibility and power. MongoDB is used heavily in the app, in ways detailed below:
-	- MongoImport --jsonarray for user data allows easy import of JSON data.
-	- Java driver is used to read a .dsv file into a collection.
+	- MongoImport is used to import all data.
 	- Aggregation is used to choose candidate items for recommendation.
 	- The QueryBuilder (Java driver) is used to retrieve data from Mongo.
 	- Java driver natively used to modify documents currently stored in the DB.
