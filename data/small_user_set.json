@@ -1,5 +1,6 @@
 {
 	'user': 'David Khavari',
+	'unique_id': 'dkhavari',
 	'favorites': [
 		2,
 		8,
@@ -16,6 +17,7 @@
 
 {
 	'user': 'EJ Bensing',
+	'unique_id': 'ebensing',
 	'favorites': [
 		4,
 		9,
@@ -32,6 +34,7 @@
 
 {
 	'user': 'Laine Herron',
+	'unique_id': 'lherron',
 	'favorites': [
 		2,
 		6,
@@ -48,6 +51,7 @@
 
 {
 	'user': 'Max Hirschhorn',
+	'unique_id': 'mhirschhorn',
 	'favorites': [
 		1,
 		4,
@@ -64,6 +68,7 @@
 
 {
 	'user': 'Tyler Jones',
+	'unique_id': 'tjones',
 	'favorites': [
 		2,
 		3,
@@ -80,6 +85,7 @@
 
 {
 	'user': 'Shihui Song',
+	'unique_id': 'ssong',
 	'favorites': [
 		53,
 		62,
@@ -96,6 +102,7 @@
 
 {
 	'user': 'Daniel Alabi',
+	'unique_id': 'dalabi',
 	'favorites': [
 		9,
 		84,
@@ -112,6 +119,7 @@
 
 {
 	'user': 'Vincent Barr',
+	'unique_id': 'vbarr',
 	'favorites': [
 		5,
 		28,
@@ -128,6 +136,7 @@
 
 {
 	'user': 'Eric Daniels',
+	'unique_id': 'edaniels',
 	'favorites': [
 		7,
 		6,
@@ -144,6 +153,7 @@
 
 {
 	'user': 'Spencer Jackson',
+	'unique_id': 'sjackson',
 	'favorites': [
 		59,
 		47,

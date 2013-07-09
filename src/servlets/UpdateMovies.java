@@ -28,7 +28,7 @@ import com.mongodb.MongoClient;
 @WebServlet("/UpdateMovies")
 public class UpdateMovies extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	
 	/*
 	 * Constructor: UpdateMovies
 	 * -------------------------
@@ -69,7 +69,6 @@ public class UpdateMovies extends HttpServlet {
 		
 		// Do filtering based on user preferences.
 		String genre = request.getParameter("genre");
-		// System.out.println("GENRE: " + genre);
 		String name = request.getParameter("title");
 		BasicDBObject filterByGenre = new BasicDBObject();
 		BasicDBObject filterByName = new BasicDBObject();
@@ -158,26 +157,41 @@ public class UpdateMovies extends HttpServlet {
 		// Get the list of the mainUser's favorite items to avoid double-adding.
 		BasicBSONList favorites = (BasicBSONList) mainUser.get("favorites");
 		
-		// Receive the results from the check boxes and $push those to the user matching unique_id.
-		String[] addedMovies = request.getParameterValues("movie");
-		
-		// Add to the user's favorites array.
-		for(int i = 0; i < addedMovies.length; i++) {
-			BasicDBObject idObj = new BasicDBObject("favorites", Integer.parseInt(addedMovies[i]));
-			if(!(favorites.contains(Integer.parseInt(addedMovies[i])))) {
-				DBObject updateQuery = new BasicDBObject("$push", idObj);
-				DBObject searchQuery = new BasicDBObject("unique_id", unique_id);
-				users.update(searchQuery, updateQuery);
-			}
-		}
 		// Quickly re-populate the list of genres.
 		ArrayList<String> genres = getGenres(request);
-				
-		// Forward to the searching page.
-		request.setAttribute("genres", genres);
-		request.setAttribute("unique_id", unique_id);
-		request.setAttribute("message", "New movies successfully added to database.");
-		request.getRequestDispatcher("search.jsp").forward(request, response);
+		
+		// Try=catch to ensure the user has not submitted an empty form.
+		try {
+			
+			String[] addedMovies = request.getParameterValues("movie");
+			
+			// Add to the user's favorites array.
+			for(int i = 0; i < addedMovies.length; i++) {
+				BasicDBObject idObj = new BasicDBObject("favorites", Integer.parseInt(addedMovies[i]));
+				if(!(favorites.contains(Integer.parseInt(addedMovies[i])))) {
+					DBObject updateQuery = new BasicDBObject("$push", idObj);
+					DBObject searchQuery = new BasicDBObject("unique_id", unique_id);
+					users.update(searchQuery, updateQuery);
+				}
+			}
+					
+			// Forward to the searching page.
+			request.setAttribute("genres", genres);
+			request.setAttribute("unique_id", unique_id);
+			request.setAttribute("message", "New movies successfully added to database.");
+			request.getRequestDispatcher("search.jsp").forward(request, response);
+			
+		} catch(Exception e) {
+			
+			// Forward to the searching page.
+			request.setAttribute("genres", genres);
+			request.setAttribute("unique_id", unique_id);
+			request.setAttribute("message", "");
+			request.getRequestDispatcher("search.jsp").forward(request, response);
+			
+		}
+		
+		
 		
 	}
 	
@@ -187,6 +201,8 @@ public class UpdateMovies extends HttpServlet {
 	 * Re-populates the genres drop-down in search.
 	 */
 	private ArrayList<String> getGenres(HttpServletRequest request) {
+		
+		// Instantiate result String.
 		ArrayList<String> genres = new ArrayList<String>();
 		
 		// Grab the MongoClient from the ServletContext.
