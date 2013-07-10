@@ -14,8 +14,3 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Recommender</title>
 </head>
-<title>Recommender</title>
-<body>
-	<div class="row">
-		<h1>Recommender</h1>
-	</div>

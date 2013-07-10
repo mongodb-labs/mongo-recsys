@@ -167,7 +167,7 @@ public class Recommend extends HttpServlet {
 		DBCollection users = db.getCollection("users");
 		
 		// Get the movie collection.
-		DBCollection items = db.getCollection("movies");
+		DBCollection items = db.getCollection(itemCollection);
 
 		// Get the user's list of favorite items - used in aggregation.
 		BasicBSONList mainFavorites = (BasicBSONList) mainUser.get("favorites");

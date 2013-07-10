@@ -206,20 +206,21 @@ public class UpdateMovies extends HttpServlet {
 		ArrayList<String> genres = new ArrayList<String>();
 		
 		// Grab the MongoClient from the ServletContext.
-				ServletContext context = request.getSession().getServletContext();
+		ServletContext context = request.getSession().getServletContext();
 
-				// Grab the MongoClient, the database, and the collection.
-				MongoClient m = (MongoClient) context.getAttribute("mongo");
-				DB db = m.getDB(databaseName);
-				DBCollection coll = db.getCollection(itemCollection);
+		// Grab the MongoClient, the database, and the collection.
+		MongoClient m = (MongoClient) context.getAttribute("mongo");
+		DB db = m.getDB(databaseName);
+		DBCollection coll = db.getCollection(itemCollection);
 
-				// Get the unique genres.
-				BasicBSONList arr = (BasicBSONList) coll.distinct("genre");
+		// Get the unique genres.
+		BasicBSONList arr = (BasicBSONList) coll.distinct("genre");
 
-				// Iterate through the collection and put the names of every user in an ArrayList.
-				for (int i = 0; i < arr.size(); i++) {
-					genres.add(arr.get(i).toString());
-				}
+		// Iterate through the collection and put the names of every user in an
+		// ArrayList.
+		for (int i = 0; i < arr.size(); i++) {
+			genres.add(arr.get(i).toString());
+		}
 		
 		return genres;
 	}

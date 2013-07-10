@@ -6,7 +6,8 @@ body {
 }
 
 h1 {
-	color:#336600;
+	color:#0066FF;
+	text-align:left;
 }
 
 h5 {
@@ -25,7 +26,34 @@ h6 {
 }
 
 #smallheader {
-	color:#336600;
+	color:#0066FF;
+}
+
+#moviebox {
+	padding:10px;
+	border-style:solid;
+	border-width:2px;
+	border-radius:25px;
+	box-shadow: 5px 5px 5px #888888;
+	background-color:#0066FF;
+	color:white;
+}
+
+#loginbar {
+	float:left;
+	padding-top:3px;
+	padding-left:5px;
+	padding-right:5px;
+}
+
+#descriptor {
+	float:left;
+	padding-top:7px;
+}
+
+#loginbutton {
+	float:left;
+	padding-top:-8px;
 }
 
 select {
