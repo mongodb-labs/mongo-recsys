@@ -135,12 +135,13 @@ public class Recommend extends HttpServlet {
 			BasicBSONList arr, String unique_id) {
 
 		// Basic setup operations for the message and collections.
-		DBCollection dataColl = db.getCollection(itemCollection);
-		DBCollection userColl = db.getCollection("users");
-		String mainUserFavorites = "Favorites list for "
-				+ mainUserObject.get("user") + ":<br>"
-				+ getMainUserFavorites(mainUserObject, dataColl, userColl, arr);
-		String message = mainUserFavorites;
+//		DBCollection dataColl = db.getCollection(itemCollection);
+//		DBCollection userColl = db.getCollection("users");
+//		String mainUserFavorites = "Favorites list for "
+//				+ mainUserObject.get("user") + ":<br>"
+//				+ getMainUserFavorites(mainUserObject, dataColl, userColl, arr);
+//		String message = mainUserFavorites;
+		String message = "";
 
 		// Find the top numberOfRecommendations candidate movies for the mainUser.
 		String recommended = identifyTopMovies(db, mainUserObject, unique_id);
@@ -218,20 +219,20 @@ public class Recommend extends HttpServlet {
 	 * All this function does is to pull the favorites array
 	 * from the user object and make it readable as a String.
 	 */
-	private String getMainUserFavorites(DBObject mainUserObject,
-			DBCollection data, DBCollection users, BasicBSONList arr) {
-		String message = "";
-		
-		// This puts all of the mainUser's favorite items into the message.
-		for (int i = 0; i < arr.size(); i++) {
-			QueryBuilder q = new QueryBuilder();
-			q.put("movie_id").is(arr.get(i));
-			DBCursor cur = data.find(q.get());
-			DBObject movieEntry = cur.next();
-			message += movieEntry.get("title") + "\n<br>";
-		}
-
-		return message;
-	}
+//	private String getMainUserFavorites(DBObject mainUserObject,
+//			DBCollection data, DBCollection users, BasicBSONList arr) {
+//		String message = "";
+//		
+//		// This puts all of the mainUser's favorite items into the message.
+//		for (int i = 0; i < arr.size(); i++) {
+//			QueryBuilder q = new QueryBuilder();
+//			q.put("movie_id").is(arr.get(i));
+//			DBCursor cur = data.find(q.get());
+//			DBObject movieEntry = cur.next();
+//			message += movieEntry.get("title") + "\n<br>";
+//		}
+//
+//		return message;
+//	}
 
 }

@@ -6,63 +6,61 @@
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<div class="container" align="center">
+<div align="left">
 
-	<div class="offset-by-six">
-		<div class="four columns">
-			<h6>A recommendation engine built with MongoDB.</h6>
-			<br>
+	<div class="row" align="left">
+		<h1>Recommender</h1>
+	</div>
 
-			<div>
+	<div>
 
-				<form action="Recommend" method="post">
-					<button name="unique_id" type="submit" value="${unique_id}">Get
-						Recommendations</button>
-				</form>
-				Search by genre.
-				
-				<!-- Making the values persist on submit. -->
-				<script type="text/javascript">
-					function cache() {
-						var selectBox = document.getElementById("selectBox");
-						var selectedText = selectBox.options[selectBox.selectedIndex].text;
-						if(typeof window.localStorage != 'undefined') {
-							localStorage.setItem("last", selectedText);
+		<form action="Recommend" method="post">
+			<button name="unique_id" type="submit" value="${unique_id}">Get
+				Recommendations</button>
+		</form>
+		Search by genre.
+
+		<!-- Making the values persist on submit. -->
+		<script type="text/javascript">
+			function cache() {
+				var selectBox = document.getElementById("selectBox");
+				var selectedText = selectBox.options[selectBox.selectedIndex].text;
+				if (typeof window.localStorage != 'undefined') {
+					localStorage.setItem("last", selectedText);
+				}
+			}
+		</script>
+
+		<form method="get" action="UpdateMovies" name="searchbar">
+			<select name="genre" id="selectBox" onchange="cache();">
+				<option>Any</option>
+				<c:forEach var="genre" items="${genres}">
+					<option>${genre}</option>
+				</c:forEach>
+			</select> Search by Title<input type="text" name="title" autofocus>
+			<button type="submit" name="unique_id" value="${unique_id}">Search!</button>
+		</form>
+
+		<!-- If the user had previously selected a value, select that. -->
+		<script type="text/javascript">
+			if (typeof window.localStorage != 'undefined') {
+				var lastSelection = localStorage.getItem("last");
+				if (lastSelection != null) {
+					var text = lastSelection, sel = document
+							.getElementById('selectBox');
+					for ( var i, j = 0; i = sel.options[j]; j++) {
+						if (i.value == text) {
+							sel.selectedIndex = j;
+							break;
 						}
 					}
-				</script>
-				
-				<form method="get" action="UpdateMovies" name="searchbar">
-					<select name="genre" id="selectBox" onchange="cache();">
-						<option>Any</option>
-						<c:forEach var="genre" items="${genres}">
-							<option>${genre}</option>
-						</c:forEach>
-					</select> Search by Title<input type="text" name="title" autofocus>
-					<button type="submit" name="unique_id" value="${unique_id}">Search!</button>
-				</form>
-				
-				<!-- If the user had previously selected a value, select that. -->
-				<script type="text/javascript">
-					if(typeof window.localStorage != 'undefined') {
-						var lastSelection = localStorage.getItem("last");
-						if(lastSelection != null) {
-							var text = lastSelection, sel = document.getElementById('selectBox');
-							for(var i, j = 0; i = sel.options[j]; j++) {
-						        if(i.value == text) {
-						            sel.selectedIndex = j;
-						            break;
-						        }
-						    }
-						}
-					}
-				</script>
+				}
+			}
+		</script>
 
-			</div>
 
-			${message}
+		${message}
 
-		</div>
 
 	</div>
 
