@@ -52,18 +52,16 @@ public class Login extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		// Get user information from the request.
-//		 String unique_id = request.getParameter("unique_id");
-		
-		String unique_id = "dkhavari";
-		
+		String unique_id = request.getParameter("unique_id");
+				
 		// Quick check to see if the user is logged in.
-//		if (unique_id == null) {
-//			String message = "Please login.";
-//			request.setAttribute("message", message);
-//			request.getRequestDispatcher("login.jsp")
-//					.forward(request, response);
-//			return;
-//		}
+		if (unique_id == null) {
+			String message = "Please login.";
+			request.setAttribute("message", message);
+			request.getRequestDispatcher("login.jsp")
+					.forward(request, response);
+			return;
+		}
 		
 		// Grab the ServletContext.
 		ServletContext context = request.getSession().getServletContext();
@@ -84,8 +82,6 @@ public class Login extends HttpServlet {
 		// Get the user's list of favorite items - used in aggregation.
 		BasicBSONList mainFavorites = (BasicBSONList) mainUser.get("favorites");
 
-		System.out.println("Main Favorites: " + mainFavorites);
-
 		// Create the matching command.
 		BasicDBObject match = new BasicDBObject("$match", new BasicDBObject(
 				"movie_id", new BasicDBObject("$in", mainFavorites)));
@@ -104,7 +100,6 @@ public class Login extends HttpServlet {
 		
 		for(DBObject obj : output.results()) {
 			String genre = obj.get("_id").toString();
-			System.out.println(genre);
 			/*
 			 * Add the genre, but also add a -1 sentinel.
 			 * This sentinel can be used in the .jsp to ensure
@@ -123,10 +118,6 @@ public class Login extends HttpServlet {
 			}
 		}
 		
-		// Testing.
-		System.out.println("Here is the title list: " + titlesByGenre);
-		System.out.println(idNumbers);
-
 		// Finish up by dispatching the request.
 		request.setAttribute("unique_id", unique_id);
 		request.setAttribute("titles", titlesByGenre);

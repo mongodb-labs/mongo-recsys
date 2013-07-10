@@ -1,6 +1,8 @@
 package servlets;
 
-import static classes.Constants.*;
+import static classes.Constants.databaseName;
+import static classes.Constants.itemCollection;
+import static classes.Constants.numberOfRecommendations;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +20,6 @@ import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.QueryBuilder;
@@ -111,47 +112,13 @@ public class Recommend extends HttpServlet {
 		mainUserQuery.put("unique_id").is(unique_id);
 		DBObject mainUserObject = coll.findOne(mainUserQuery.get());
 
-		// Grab the user's array from the user object.
-		BasicBSONList arr = (BasicBSONList) mainUserObject.get("favorites");
-
 		// Dispatch the movies that the user likes.
-		String message = createRecommendation(db, mainUserObject, arr, unique_id);
-
+		ArrayList<String> films = identifyTopMovies(db, mainUserObject, unique_id);
+		
 		// Set the value of the message and dispatch to the JSP.
 		request.setAttribute("unique_id", unique_id);
-		request.setAttribute("message", message);
-		request.getRequestDispatcher("home.jsp").forward(request, response);
-	}
-
-	/*
-	 * String: createRecommendation
-	 * ---------------------
-	 * Creates the message that is dispatched to search.jsp in the doPost function.
-	 * Calls buildSimilarCollection as well as identifyTopMovies, which get a list
-	 * of users with similar preferences then construct a list of most recommended
-	 * movies respectively.
-	 */
-	private String createRecommendation(DB db, DBObject mainUserObject,
-			BasicBSONList arr, String unique_id) {
-
-		// Basic setup operations for the message and collections.
-//		DBCollection dataColl = db.getCollection(itemCollection);
-//		DBCollection userColl = db.getCollection("users");
-//		String mainUserFavorites = "Favorites list for "
-//				+ mainUserObject.get("user") + ":<br>"
-//				+ getMainUserFavorites(mainUserObject, dataColl, userColl, arr);
-//		String message = mainUserFavorites;
-		String message = "";
-
-		// Find the top numberOfRecommendations candidate movies for the mainUser.
-		String recommended = identifyTopMovies(db, mainUserObject, unique_id);
-		message += "<br>Recommended Films:<br>" + recommended;
-
-		// Drop the similar collection. This will be deleted soon.
-		DBCollection similar = db.getCollection("similar");
-		similar.drop();
-
-		return message;
+		request.setAttribute("films", films);
+		request.getRequestDispatcher("recs.jsp").forward(request, response);
 	}
 
 	/*
@@ -159,10 +126,10 @@ public class Recommend extends HttpServlet {
 	 * --------------------------------
 	 * Finds all of the top movies for the given user using aggregation.
 	 */
-	private String identifyTopMovies(DB db, DBObject mainUser, String unique_id) {
+	private ArrayList<String> identifyTopMovies(DB db, DBObject mainUser, String unique_id) {
 
-		// Declare the return string.
-		String result = "";
+		// Declare the return ArrayList.
+		ArrayList<String> results = new ArrayList<String>();
 		
 		// Get the user collection.
 		DBCollection users = db.getCollection("users");
@@ -206,33 +173,10 @@ public class Recommend extends HttpServlet {
 			BasicDBObject query = new BasicDBObject("movie_id", movieNum);
 			DBObject recommendation = items.findOne(query);
 			String title = recommendation.get("title").toString();
-			result += title + "<br>";
+			results.add(title);
 		}
 
-		return result;
+		return results;
 	}
-
-	/*
-	 * Helper String: getMainUserFavorites
-	 * -----------------------------------
-	 * Gets the main user's favorite items and formats them.
-	 * All this function does is to pull the favorites array
-	 * from the user object and make it readable as a String.
-	 */
-//	private String getMainUserFavorites(DBObject mainUserObject,
-//			DBCollection data, DBCollection users, BasicBSONList arr) {
-//		String message = "";
-//		
-//		// This puts all of the mainUser's favorite items into the message.
-//		for (int i = 0; i < arr.size(); i++) {
-//			QueryBuilder q = new QueryBuilder();
-//			q.put("movie_id").is(arr.get(i));
-//			DBCursor cur = data.find(q.get());
-//			DBObject movieEntry = cur.next();
-//			message += movieEntry.get("title") + "\n<br>";
-//		}
-//
-//		return message;
-//	}
 
 }

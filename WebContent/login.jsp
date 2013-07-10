@@ -10,12 +10,12 @@
 
 		<div class="row">
 			<div align="left">
-				<form action="Login" method="get"> <!--  Normally this is POST -->
+				<form action="Login" method="post">
 					<p id="smallheader">Returning Users</p>
 					<div id="descriptor">Unique ID:</div>
 					&nbsp;
 					<div id="loginbar">
-						<input type="text" name="userid">
+						<input type="text" name="userid" autofocus>
 					</div>
 					<div id="loginbutton">
 						<button name="subject" type="submit" value="login">Login</button>
@@ -25,7 +25,8 @@
 		</div>
 
 		<div class="row">
-			<button onClick="unhide(); hideButton(); hideMsg();" id="displaynewuserbutton">New User?</button>
+			<button onClick="unhide(); hideButton(); hideMsg();"
+				id="displaynewuserbutton">New User?</button>
 		</div>
 
 		<script type="text/javascript">
@@ -44,7 +45,7 @@
 		</script>
 
 		<!-- This form allows for new user creation, and remains hidden until user activation. -->
-		<div class="row" style="display:none" id="newuser">
+		<div class="row" style="display: none" id="newuser">
 			<div align="left">
 				<form action="CreateUser" method="post">
 					<p id="smallheader">New Users</p>

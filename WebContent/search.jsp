@@ -12,14 +12,11 @@
 		<h1>Recommender</h1>
 	</div>
 
+	<%@include file="templates/navbar.jsp"%>
+
 	<div>
-
-		<form action="Recommend" method="post">
-			<button name="unique_id" type="submit" value="${unique_id}">Get
-				Recommendations</button>
-		</form>
-		Search by genre.
-
+		<h5>Search by Genre</h5>
+		<br>
 		<!-- Making the values persist on submit. -->
 		<script type="text/javascript">
 			function cache() {
@@ -37,7 +34,9 @@
 				<c:forEach var="genre" items="${genres}">
 					<option>${genre}</option>
 				</c:forEach>
-			</select> Search by Title<input type="text" name="title" autofocus>
+			</select>
+			<h5>Search by Title</h5>
+			<br> <input type="text" name="title" autofocus>
 			<button type="submit" name="unique_id" value="${unique_id}">Search!</button>
 		</form>
 
@@ -58,28 +57,22 @@
 			}
 		</script>
 
-
 		${message}
-
 
 	</div>
 
-	<div class="offset-by-three">
-		<div class="ten columns" align="center">
-			<form action="UpdateMovies" method="post">
-				<c:forEach items="${results}" varStatus="loop">
-					<div id="moviebox">
-						${results[loop.index]}<br> <input type="checkbox"
-							name="movie" value="${ids[loop.index]}"><br> <br>
-					</div>
-					<br>
-				</c:forEach>
-				<c:if test="${not empty results}">
-					<button name="unique_id" type="submit" value="${unique_id}">Add
-						Items.</button>
-				</c:if>
-			</form>
-		</div>
+	<div align="left">
+		<form action="UpdateMovies" method="post">
+			<c:forEach items="${results}" varStatus="loop">
+				<div>
+					<input type="checkbox" name="movie" value="${ids[loop.index]}">${results[loop.index]}<br>
+				</div>
+				<br>
+			</c:forEach>
+			<c:if test="${not empty results}">
+				<button name="unique_id" type="submit" value="${unique_id}">Add to Favorites</button>
+			</c:if>
+		</form>
 	</div>
 
 </div>
