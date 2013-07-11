@@ -49,7 +49,6 @@ public class AddItems extends HttpServlet {
 				
 		// Check if the uniqueID is there, if not, redirect.
 		if(unique_id == null) {
-			System.out.println("No id!");
 			String message = "Please login.";
 			request.setAttribute("message", message);
 			request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -114,7 +113,6 @@ public class AddItems extends HttpServlet {
 		// Now we need to iterate over this collection.
 		for(int i = 0; i < objects.size(); i++) {
 			DBObject obj = (DBObject) objects.get(i).get("obj");
-			System.out.println(obj.get(itemName));
 			
 			// Add to the arrays.
 			searchResults.add(obj.get(itemName).toString());
@@ -158,7 +156,6 @@ public class AddItems extends HttpServlet {
 		
 		// Check for unique_id - copy/paste.
 		if(unique_id == null) {
-			System.out.println("No id!");
 			String message = "Please login.";
 			request.setAttribute("message", message);
 			request.getRequestDispatcher("login.jsp").forward(request, response);
