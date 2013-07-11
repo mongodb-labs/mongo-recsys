@@ -1,21 +1,16 @@
 package servlets;
 
-import static classes.Constants.databaseName;
-import static classes.Constants.itemCollection;
-
+import static classes.Constants.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.bson.types.BasicBSONList;
-
 import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObject;
 import com.mongodb.CommandResult;
@@ -50,7 +45,7 @@ public class AddItems extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		
 		// Get unique user ID info from the request.
-		String unique_id = request.getParameter("unique_id");
+		String unique_id = request.getParameter(userIDField);
 				
 		// Check if the uniqueID is there, if not, redirect.
 		if(unique_id == null) {
@@ -65,13 +60,13 @@ public class AddItems extends HttpServlet {
 		ServletContext context = request.getSession().getServletContext();
 
 		// Grab the MongoClient and create a database or get it if it already exists.
-		MongoClient m = (MongoClient) context.getAttribute("mongo");
+		MongoClient m = (MongoClient) context.getAttribute(mongoClient);
 		DB db = m.getDB(databaseName);
 		DBCollection coll = db.getCollection(itemCollection);
 		
 		// Do filtering based on user preferences.
-		String genre = request.getParameter("genre");
-		String name = request.getParameter("title");
+		String genre = request.getParameter(itemCategory);
+		String name = request.getParameter(itemName);
 		BasicDBObject filterByGenre = new BasicDBObject();
 		AggregationOutput output = null;
 		CommandResult result = null;
@@ -79,7 +74,7 @@ public class AddItems extends HttpServlet {
 		
 		// Search according to user preference.
 		if(genre.equals("Any") && name.equals("")) { // Any genre, no title.
-			filterByGenre.append("$match", new BasicDBObject("genre", new BasicDBObject("$exists", true)));
+			filterByGenre.append("$match", new BasicDBObject(itemCategory, new BasicDBObject("$exists", true)));
 			output = coll.aggregate(filterByGenre);
 			
 		} else if(genre.equals("Any") && !name.equals("")) { // Any genre, specific title.
@@ -94,11 +89,11 @@ public class AddItems extends HttpServlet {
 		    objects = list;
 						
 		} else if(!genre.equals("Any") && name.equals("")) { // Specific genre, no title.
-			filterByGenre.append("$match", new BasicDBObject("genre", genre));
+			filterByGenre.append("$match", new BasicDBObject(itemCategory, genre));
 			output = coll.aggregate(filterByGenre);
 		
 		} else if(!genre.equals("Any") && !name.equals("")) { // Specific genre, specific title.
-			filterByGenre.append("genre", genre);
+			filterByGenre.append(itemCategory, genre);
 			final DBObject textSearchCommand = new BasicDBObject();
 		    textSearchCommand.put("text", itemCollection);
 		    textSearchCommand.put("search", name);
@@ -119,11 +114,11 @@ public class AddItems extends HttpServlet {
 		// Now we need to iterate over this collection.
 		for(int i = 0; i < objects.size(); i++) {
 			DBObject obj = (DBObject) objects.get(i).get("obj");
-			System.out.println(obj.get("title"));
+			System.out.println(obj.get(itemName));
 			
 			// Add to the arrays.
-			searchResults.add(obj.get("title").toString());
-			idNumbers.add(Integer.parseInt(obj.get("movie_id").toString()));
+			searchResults.add(obj.get(itemName).toString());
+			idNumbers.add(Integer.parseInt(obj.get(itemIDField).toString()));
 			counter++;
 		}
 		
@@ -131,8 +126,8 @@ public class AddItems extends HttpServlet {
 		if(output != null) {
 			for (DBObject obj : output.results()) {
 				if(obj == null) break;
-				searchResults.add(obj.get("title").toString());
-				idNumbers.add(Integer.parseInt(obj.get("movie_id").toString()));
+				searchResults.add(obj.get(itemName).toString());
+				idNumbers.add(Integer.parseInt(obj.get(itemIDField).toString()));
 				counter++;
 			}
 		}
@@ -145,7 +140,7 @@ public class AddItems extends HttpServlet {
 		request.setAttribute("results", searchResults);
 		request.setAttribute("ids", idNumbers);
 		request.setAttribute("arraysize", counter);
-		request.setAttribute("unique_id", unique_id);
+		request.setAttribute(userIDField, unique_id);
 		request.getRequestDispatcher("search.jsp").forward(request, response);
 	}
 
@@ -159,7 +154,7 @@ public class AddItems extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		
 		// Get unique user ID info from the request.
-		String unique_id = request.getParameter("unique_id");
+		String unique_id = request.getParameter(userIDField);
 		
 		// Check for unique_id - copy/paste.
 		if(unique_id == null) {
@@ -171,16 +166,16 @@ public class AddItems extends HttpServlet {
 		}
 		
 		// Get the database and collection.
-		MongoClient m = (MongoClient) request.getServletContext().getAttribute("mongo");
+		MongoClient m = (MongoClient) request.getServletContext().getAttribute(mongoClient);
 		DB db = m.getDB(databaseName);
-		DBCollection users = db.getCollection("users");
+		DBCollection users = db.getCollection(userCollection);
 		
 		// Create a query to find the user by unique_id.
-		DBObject query = new BasicDBObject("unique_id", unique_id);
+		DBObject query = new BasicDBObject(userIDField, unique_id);
 		DBObject mainUser = users.findOne(query);
 		
 		// Get the list of the mainUser's favorite items to avoid double-adding.
-		BasicBSONList favorites = (BasicBSONList) mainUser.get("favorites");
+		BasicBSONList favorites = (BasicBSONList) mainUser.get(userPrefs);
 		
 		// Quickly re-populate the list of genres.
 		ArrayList<String> genres = getGenres(request);
@@ -190,33 +185,39 @@ public class AddItems extends HttpServlet {
 			
 			String[] addedMovies = request.getParameterValues("movie");
 			
+			int flag = 0;
+			
 			// Add to the user's favorites array.
 			for(int i = 0; i < addedMovies.length; i++) {
-				BasicDBObject idObj = new BasicDBObject("favorites", Integer.parseInt(addedMovies[i]));
+				BasicDBObject idObj = new BasicDBObject(userPrefs, Integer.parseInt(addedMovies[i]));
 				if(!(favorites.contains(Integer.parseInt(addedMovies[i])))) {
 					DBObject updateQuery = new BasicDBObject("$push", idObj);
-					DBObject searchQuery = new BasicDBObject("unique_id", unique_id);
+					DBObject searchQuery = new BasicDBObject(userIDField, unique_id);
 					users.update(searchQuery, updateQuery);
+				} else {
+					flag = 1;
 				}
 			}
 					
 			// Forward to the searching page.
 			request.setAttribute("genres", genres);
-			request.setAttribute("unique_id", unique_id);
-			request.setAttribute("message", "New movies successfully added to database.");
+			request.setAttribute(userIDField, unique_id);
+			if(flag==0) {
+				request.setAttribute("message", "New movies successfully added to database.");
+			} else {
+				request.setAttribute("message", "Movie already present in your collection.");
+			}
 			request.getRequestDispatcher("search.jsp").forward(request, response);
 			
 		} catch(Exception e) {
 			
 			// Forward to the searching page.
 			request.setAttribute("genres", genres);
-			request.setAttribute("unique_id", unique_id);
+			request.setAttribute(userIDField, unique_id);
 			request.setAttribute("message", "");
 			request.getRequestDispatcher("search.jsp").forward(request, response);
 			
 		}
-		
-		
 		
 	}
 	
@@ -234,12 +235,12 @@ public class AddItems extends HttpServlet {
 		ServletContext context = request.getSession().getServletContext();
 
 		// Grab the MongoClient, the database, and the collection.
-		MongoClient m = (MongoClient) context.getAttribute("mongo");
+		MongoClient m = (MongoClient) context.getAttribute(mongoClient);
 		DB db = m.getDB(databaseName);
 		DBCollection coll = db.getCollection(itemCollection);
 
 		// Get the unique genres.
-		BasicBSONList arr = (BasicBSONList) coll.distinct("genre");
+		BasicBSONList arr = (BasicBSONList) coll.distinct(itemCategory);
 
 		// Iterate through the collection and put the names of every user in an
 		// ArrayList.

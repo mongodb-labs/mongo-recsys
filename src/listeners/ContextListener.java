@@ -1,7 +1,7 @@
 package listeners;
 
 import java.net.UnknownHostException;
-
+import static classes.Constants.*;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
@@ -41,7 +41,7 @@ public class ContextListener implements ServletContextListener {
 			mongo = new MongoClient("localhost", 27017);
 
 			// Get the context so we can add the database to it.
-			arg0.getServletContext().setAttribute("mongo", mongo);
+			arg0.getServletContext().setAttribute(mongoClient, mongo);
 
 		} catch (UnknownHostException e) {
 			

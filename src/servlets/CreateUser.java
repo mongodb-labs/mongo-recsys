@@ -1,18 +1,14 @@
 package servlets;
 
-import static classes.Constants.databaseName;
-
+import static classes.Constants.*;
 import java.io.IOException;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.bson.types.BasicBSONList;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -60,9 +56,9 @@ public class CreateUser extends HttpServlet {
 		ServletContext context = request.getSession().getServletContext();
 
 		// Grab the MongoClient and create a database or get it if it already exists.
-		MongoClient m = (MongoClient) context.getAttribute("mongo");
+		MongoClient m = (MongoClient) context.getAttribute(mongoClient);
 		DB db = m.getDB(databaseName);
-		DBCollection coll = db.getCollection("users");
+		DBCollection coll = db.getCollection(userCollection);
 		
 		// Get unique user ID info from the request.
 		String uniqueID = request.getParameter("userid");
@@ -70,7 +66,7 @@ public class CreateUser extends HttpServlet {
 	
 		// Check to see if the user's unique ID already exists. If not, create the new user.
 		QueryBuilder mainUserQuery = new QueryBuilder();
-		mainUserQuery.put("unique_id").is(uniqueID);
+		mainUserQuery.put(userIDField).is(uniqueID);
 		DBObject check = coll.findOne(mainUserQuery.get());
 		if(check != null) {
 			request.setAttribute("message", "This unique user ID is already taken. Please choose another.");
@@ -80,9 +76,9 @@ public class CreateUser extends HttpServlet {
 		
 		// Create the user and insert into the collection.
 		BasicDBObject newUser = new BasicDBObject();
-		newUser.put("unique_id", uniqueID);
+		newUser.put(userIDField, uniqueID);
 		newUser.put("user", fullName);
-		newUser.put("favorites", new BasicBSONList());
+		newUser.put(userPrefs, new BasicBSONList());
 		coll.insert(newUser);
 		
 		// Send back a message notifying the user that creation was successful.

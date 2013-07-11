@@ -1,16 +1,13 @@
 package servlets;
 
-import static classes.Constants.databaseName;
-
+import static classes.Constants.*;
 import java.io.IOException;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -46,12 +43,9 @@ public class RemoveItem extends HttpServlet {
 	 * Receives an item to be deleted from the user and deletes it.
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		// Testing.
-		System.out.println("We in there dawg.");
-		
+				
 		// Get user information from the request.
-		String unique_id = request.getParameter("unique_id");
+		String unique_id = request.getParameter(userIDField);
 		String removeThis = request.getParameter("remove");
 		
 		// Quick check to see if the user is logged in.
@@ -67,17 +61,17 @@ public class RemoveItem extends HttpServlet {
 		ServletContext context = request.getSession().getServletContext();
 
 		// Grab the MongoClient and create a database or get it, if it exists.
-		MongoClient m = (MongoClient) context.getAttribute("mongo");
+		MongoClient m = (MongoClient) context.getAttribute(mongoClient);
 		DB db = m.getDB(databaseName);
 
 		// Retrieve the appropriate user object from the collection.
-		DBCollection coll = db.getCollection("users");
+		DBCollection coll = db.getCollection(userCollection);
 		DBObject mainUserQuery = new BasicDBObject();
-		mainUserQuery.put("unique_id", unique_id);
+		mainUserQuery.put(userIDField, unique_id);
 		
 		// Update the user collection by pulling the movie_id from the favorites list.
 		coll.update(mainUserQuery, new BasicDBObject("$pull",
-				new BasicDBObject("favorites", Integer.parseInt(removeThis))));
+				new BasicDBObject(userPrefs, Integer.parseInt(removeThis))));
 		
 		// Return everything to the home page as necessary.
 		request.setAttribute("unique_id", unique_id);

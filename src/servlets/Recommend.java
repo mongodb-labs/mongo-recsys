@@ -1,21 +1,15 @@
 package servlets;
 
-import static classes.Constants.databaseName;
-import static classes.Constants.itemCollection;
-import static classes.Constants.numberOfRecommendations;
-
+import static classes.Constants.*;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.bson.types.BasicBSONList;
-
 import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -59,7 +53,7 @@ public class Recommend extends HttpServlet {
 		DBCollection coll = db.getCollection(itemCollection);
 
 		// Get the unique genres.
-		BasicBSONList arr = (BasicBSONList) coll.distinct("genre");
+		BasicBSONList arr = (BasicBSONList) coll.distinct(itemCategory);
 
 		// Iterate through the collection and put the names of every genre in an ArrayList.
 		ArrayList<String> genres = new ArrayList<String>();
@@ -67,9 +61,9 @@ public class Recommend extends HttpServlet {
 			genres.add(arr.get(i).toString());
 		}
 		
-		String unique_id = request.getParameter("unique_id");
+		String unique_id = request.getParameter(userIDField);
 		request.setAttribute("genres", genres);
-		request.setAttribute("unique_id", unique_id);
+		request.setAttribute(userIDField, unique_id);
 		request.getRequestDispatcher("search.jsp").forward(request, response);
 
 	}
@@ -92,7 +86,7 @@ public class Recommend extends HttpServlet {
 		DB db = m.getDB(databaseName);
 
 		// Get user information from the request.
-		String unique_id = request.getParameter("unique_id");
+		String unique_id = request.getParameter(userIDField);
 		
 		// Quick check to see if the user is logged in.
 		if(unique_id == null) {
@@ -104,19 +98,19 @@ public class Recommend extends HttpServlet {
 		
 		// Set up a user object to represent the user in the query.
 		BasicDBObject mainUser = new BasicDBObject();
-		mainUser.put("unique_id", unique_id);
+		mainUser.put(userIDField, unique_id);
 
 		// Retrieve the appropriate user object from the collection.
-		DBCollection coll = db.getCollection("users");
+		DBCollection coll = db.getCollection(userCollection);
 		QueryBuilder mainUserQuery = new QueryBuilder();
-		mainUserQuery.put("unique_id").is(unique_id);
+		mainUserQuery.put(userIDField).is(unique_id);
 		DBObject mainUserObject = coll.findOne(mainUserQuery.get());
 
 		// Dispatch the movies that the user likes.
 		ArrayList<String> films = identifyTopMovies(db, mainUserObject, unique_id);
 		
 		// Set the value of the message and dispatch to the JSP.
-		request.setAttribute("unique_id", unique_id);
+		request.setAttribute(userIDField, unique_id);
 		request.setAttribute("films", films);
 		request.getRequestDispatcher("recs.jsp").forward(request, response);
 	}
@@ -132,20 +126,20 @@ public class Recommend extends HttpServlet {
 		ArrayList<String> results = new ArrayList<String>();
 		
 		// Get the user collection.
-		DBCollection users = db.getCollection("users");
+		DBCollection users = db.getCollection(userCollection);
 		
 		// Get the movie collection.
 		DBCollection items = db.getCollection(itemCollection);
 
 		// Get the user's list of favorite items - used in aggregation.
-		BasicBSONList mainFavorites = (BasicBSONList) mainUser.get("favorites");
+		BasicBSONList mainFavorites = (BasicBSONList) mainUser.get(userPrefs);
 		
 		// Create the matching command.
 		BasicDBObject match = new BasicDBObject("$match",
-				new BasicDBObject("favorites", new BasicDBObject("$in", mainFavorites)));
+				new BasicDBObject(userPrefs, new BasicDBObject("$in", mainFavorites)));
 		
 		// Project over the favorites array.
-		BasicDBObject project = new BasicDBObject("$project", new BasicDBObject("favorites", "$favorites"));
+		BasicDBObject project = new BasicDBObject("$project", new BasicDBObject(userPrefs, "$favorites"));
 		
 		// Unwind so every favorite movie is separate.
 		BasicDBObject unwind = new BasicDBObject("$unwind", "$favorites");
@@ -170,9 +164,9 @@ public class Recommend extends HttpServlet {
 		// Iterate through the output, look up the names of the movies, add them to the result string.
 		for(DBObject obj : output.results()) {
 			int movieNum = Integer.parseInt(obj.get("_id").toString());
-			BasicDBObject query = new BasicDBObject("movie_id", movieNum);
+			BasicDBObject query = new BasicDBObject(itemIDField, movieNum);
 			DBObject recommendation = items.findOne(query);
-			String title = recommendation.get("title").toString();
+			String title = recommendation.get(itemName).toString();
 			results.add(title);
 		}
 
