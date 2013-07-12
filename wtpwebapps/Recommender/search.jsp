@@ -64,15 +64,21 @@
 
 	<div align="left">
 		<form action="UpdateMovies" method="post">
+		
+			<c:if test="${not empty results}">
+				<button name="unique_id" type="submit" value="${unique_id}"
+					id="floatingbutton">
+					<p id="buttontext">+</p>
+				</button>
+			</c:if>
+
 			<c:forEach items="${results}" varStatus="loop">
 				<div>
 					<input type="checkbox" name="movie" value="${ids[loop.index]}">${results[loop.index]}<br>
 				</div>
 				<br>
 			</c:forEach>
-			<c:if test="${not empty results}">
-				<button name="unique_id" type="submit" value="${unique_id}">Add to Favorites</button>
-			</c:if>
+
 		</form>
 	</div>
 

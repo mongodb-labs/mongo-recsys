@@ -11,7 +11,7 @@ h1 {
 }
 
 h2 {
-	color: #0066FF;	
+	color: #0066FF;
 	text-align: left;
 	font-size: 20pt;
 }
@@ -66,8 +66,22 @@ h6 {
 	float: left;
 }
 
-#sexybutton {
+#floatingbutton {
+	position: fixed;
+	bottom: 0px;
+	right: 20px;
+	width:100px;
+	height:100px;
+	font-size:100px;
+	vertical-align:middle;
+	text-align:center;
+	padding: 0px 0px 30px 0px;
+}
 
+#buttontext {
+	position: relative;
+	bottom: 22px;
+	color: #00CC00
 }
 
 select {

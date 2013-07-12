@@ -202,7 +202,8 @@ public class AddItems extends HttpServlet {
 			if(flag==0) {
 				request.setAttribute("message", "New movies successfully added to database.");
 			} else {
-				request.setAttribute("message", "Movie already present in your collection.");
+				request.setAttribute("message", "One or more movies was already present in your collection," +
+						" but requested movies not already in your favorites list have been added.");
 			}
 			request.getRequestDispatcher("search.jsp").forward(request, response);
 			
