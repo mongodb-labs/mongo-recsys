@@ -11,6 +11,9 @@
 		</div>
 
 		<%@include file="templates/navbar.jsp"%>
+		
+		<h2>Your Favorite Films</h2>
+		<p>Check the box next to a film to remove it from your favorites.</p>
 
 		<div class="row">
 			<!--  This part here prints all of the user's preferences. -->

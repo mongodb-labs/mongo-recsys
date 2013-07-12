@@ -15,6 +15,7 @@
 	<%@include file="templates/navbar.jsp"%>
 
 	<div>
+		<h2>Find New Favorites</h2>
 		<h5>Search by Genre</h5>
 		<br>
 		<!-- Making the values persist on submit. -->
