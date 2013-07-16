@@ -13,10 +13,9 @@
 
 		<h2>Films Recommended for You</h2>
 		<c:forEach var="film" items="${films}">
-			${film}<br>
-			<br>
+			<p id="15px">${film}</p>
 		</c:forEach>
 
 	</div>
 
-	<%@include file="templates/footer.jsp"%>
+<%@include file="templates/footer.jsp"%>

@@ -11,7 +11,7 @@
 		</div>
 
 		<%@include file="templates/navbar.jsp"%>
-		
+
 		<h2>Your Favorite Films</h2>
 		<p>Check the box next to a film to remove it from your favorites.</p>
 
@@ -24,8 +24,8 @@
 							<h5>${titles[loop.index]}</h5>
 						</c:when>
 						<c:when test="${ids[loop.index] != -1}">
-			${titles[loop.index]}
-					<input type="checkbox" name="movie" value="${ids[loop.index]}">
+							<input type="checkbox" name="movie" value="${ids[loop.index]}">
+							${titles[loop.index]}
 						</c:when>
 					</c:choose>
 				</div>
@@ -79,5 +79,5 @@
 	});
 </script>
 
-<%@include file="templates/scroll.jsp" %>
+<%@include file="templates/scroll.jsp"%>
 <%@include file="templates/footer.jsp"%>
