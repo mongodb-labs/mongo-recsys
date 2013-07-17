@@ -39,9 +39,9 @@ Here are the steps to getting this program up and running:
 
 3. Run "mongod --setParameter textSearchEnabled=true". Without running this command and having mongod running in the background, this program will not work as desired.
 
-4. Run the mongo shell and execute the following command: "db.collection.ensureIndex('title', 'text')" if the field you want to text search is named 'title'. Putting 'text' as the string literal value is simply the way text search has been formatted to accept parameters.
+4. Use mongoimport to import documents from the data directory in the project. The default database name is "daviddb", and the default user and item collections are "users" and "movies" (no quotes when actually creating these). There is more information on how to do this in the README_data.txt file contained in the data directory.
 
-5. Use mongoimport to import documents from the data directory in the project. There is more information on how to do this in the README_data.txt file contained in the data directory.
+5. Run the mongo shell and execute the following command: "db.collection.ensureIndex('title', 'text')" if the field you want to text search is named 'title'. Putting 'text' as the string literal value is simply the way text search has been formatted to accept parameters.
 
 6. Once you have data imported and correctly named, you should be all set to run the program!
 
