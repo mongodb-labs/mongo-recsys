@@ -1,7 +1,7 @@
 <ul class="nav nav-tabs">
-	<li><a href="#" onclick="document.getElementById('b1').click(); return false;" id="home">My Favorites</a></li>
-	<li><a href="#" onclick="document.getElementById('b2').click(); return false;" id="update">Update Movies</a></li>
-	<li><a href="#" onclick="document.getElementById('b3').click(); return false;" id="recommend">Recommendations</a></li>
+	<li id="hometab"><a href="#" onclick="document.getElementById('b1').click(); return false;" id="home">My Favorites</a></li>
+	<li id="updatetab"><a href="#" onclick="document.getElementById('b2').click(); return false;" id="update">Update Movies</a></li>
+	<li id="recommendtab"><a href="#" onclick="document.getElementById('b3').click(); return false;" id="recommend">Recommendations</a></li>
 	<li><a href="login.jsp">Log Out</a></li>
 </ul>
 

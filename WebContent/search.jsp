@@ -3,16 +3,21 @@
 
 <body onload="activateTab()">
 
-	<div align="left">
+	<div class="container">
 
-		<div class="row" align="left">
-			<h1>Recommender</h1>
+		<div class="row">
+			<div class="span4">
+				<h1>Recommender</h1>
+			</div>
 		</div>
+		
+		<br>
 
 		<%@include file="templates/navbar.jsp"%>
 
 		<div>
-			<h2>Find New Favorites</h2>
+			<h4 style="color:#C0C0C0">Find New Favorites</h4>
+			<br>
 			<h5>Search by Genre</h5>
 			<br>
 			<!-- Making the values persist on submit. -->
@@ -81,7 +86,7 @@
 
 		<script type="text/javascript">
 			function activateTab() {
-				var updateTab = document.getElementById("update");
+				var updateTab = document.getElementById("updatetab");
 				updateTab.className = "active";
 			}
 		</script>

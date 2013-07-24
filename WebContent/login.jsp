@@ -23,11 +23,13 @@
 									autofocus>
 							</div>
 						</fieldset>
-						<button class="btn btn-primary" type="submit">Sign In</button>
-						<button class="btn" type="button"
-							onClick="unhide(); hideMsg(); hideLogin();"
-							id="displaynewuserbutton">New User?</button>
-
+						<div style="display:inline; float:none">
+							<button class="btn btn-primary" type="submit"
+								style="width: 100px">Sign In</button>
+							<button style="width: 100px" class="btn" type="button"
+								onClick="unhide(); hideMsg(); hideLogin();"
+								id="displaynewuserbutton">New User?</button>
+						</div>
 					</form>
 					<div id="messagediv">${message}</div>
 				</div>
@@ -35,7 +37,8 @@
 		</div>
 	</div>
 
-	<div class="container" style="visibility: hidden" style="width:300px" id="newuser">
+	<div class="container" style="visibility: hidden" style="width:300px"
+		id="newuser">
 		<div class="content">
 			<div class="row">
 				<div class="login-form">

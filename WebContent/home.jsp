@@ -16,7 +16,9 @@
 
 		<%@include file="templates/navbar.jsp"%>
 
-		<p>Check the box next to a film to remove it from your favorites.</p>
+		<h4 style="color:#C0C0C0">Click Movie to Remove from Favorites</h4>
+		
+		<br>
 
 		<div class="text-left">
 			<!--  This part here prints all of the user's preferences. -->
@@ -82,7 +84,7 @@
 	});
 
 	function activateTab() {
-		var homeTab = document.getElementById("home");
+		var homeTab = document.getElementById("hometab");
 		homeTab.className = "active";
 	}
 </script>
