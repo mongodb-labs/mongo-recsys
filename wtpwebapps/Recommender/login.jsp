@@ -2,71 +2,74 @@
 
 <body>
 
-	<div align="left">
+	<div class="text-center">
+		<h1>Recommender</h1>
+	</div>
 
-		<div class="row" align="left">
-			<h1>Recommender</h1>
-		</div>
+	<div class="text-center">
+		<h4 style="color: #C0C0C0">Sign In / Create Account</h4>
+		<br>
+	</div>
 
-		<div class="row">
-			<div align="left">
-				<form action="Login" method="post">
-					<p id="smallheader">Returning Users</p>
-					<div id="descriptor">Unique ID:</div>
-					&nbsp;
-					<div id="loginbar">
-						<input type="text" name="userid" autofocus>
-					</div>
-					<div id="loginbutton">
-						<button name="subject" type="submit" value="login">Login</button>
-					</div>
-				</form>
+	<div class="container" id="loginbox">
+		<div class="content">
+			<div class="row">
+				<div class="login-form">
+					<form action="Login" method="post">
+						<fieldset>
+							<div class="clearfix">
+								<input type="text" name="userid" placeholder="Username"
+									style="border-color: black; border-style: solid; border-width: 2px;"
+									autofocus>
+							</div>
+						</fieldset>
+						<button class="btn btn-primary" type="submit">Sign In</button>
+						<button class="btn" type="button" onClick="unhide(); hideMsg(); hideLogin();"
+							id="displaynewuserbutton">New User?</button>
+
+					</form>
+					<div id="messagediv">${message}</div>
+				</div>
 			</div>
-		</div>
-
-		<div class="row">
-			<button onClick="unhide(); hideButton(); hideMsg();"
-				id="displaynewuserbutton">New User?</button>
-		</div>
-
-		<script type="text/javascript">
-			function unhide() {
-				var hiddenDiv = document.getElementById('newuser');
-				hiddenDiv.style.display = 'inline';
-			}
-			function hideButton() {
-				var button = document.getElementById('displaynewuserbutton');
-				button.style.display = 'none';
-			}
-			function hideMsg() {
-				var msgdiv = document.getElementById('messagediv');
-				msgdiv.style.display = 'none';
-			}
-		</script>
-
-		<!-- This form allows for new user creation, and remains hidden until user activation. -->
-		<div class="row" style="display: none" id="newuser">
-			<div align="left">
-				<form action="CreateUser" method="post">
-					<p id="smallheader">New Users</p>
-					<div id="descriptor">Unique ID:</div>
-					<div id="loginbar">
-						<input type="text" name="userid"><br>
-					</div>
-					<div id="descriptor">Name:</div>
-					<div id="loginbar">
-						<input type="text" name="realname">
-					</div>
-					<div id="loginbutton">
-						<button name="subject" type="submit" value="create">Create
-							New User</button>
-					</div>
-				</form>
-			</div>
-		</div>
-		<div class="row" id="messagediv">
-			<p>${message}</p>
 		</div>
 	</div>
+
+	<div class="container" style="visibility: hidden" id="newuser">
+		<div class="content">
+			<div class="row">
+				<div class="login-form">
+					<form action="CreateUser" method="post">
+						<fieldset>
+							<div class="clearfix">
+								<input type="text" name="userid" placeholder="New Username"
+									style="border-color: black; border-style: solid; border-width: 2px;"
+									autofocus><br> <input type="text" name="realname"
+									placeholder="Real Name"
+									style="border-color: black; border-style: solid; border-width: 2px;"
+									autofocus>
+							</div>
+						</fieldset>
+						<button class="btn btn-primary" type="submit">Create New
+							User</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		function unhide() {
+			var hiddenDiv = document.getElementById('newuser');
+			hiddenDiv.style.visibility = 'visible';
+		}
+		function hideLogin() {
+			var login = document.getElementById('loginbox');
+			login.style.display = 'none';
+		}
+		function hideMsg() {
+			var msgdiv = document.getElementById('messagediv');
+			msgdiv.style.display = 'none';
+		}
+	</script>
 
 	<%@include file="templates/footer.jsp"%>
