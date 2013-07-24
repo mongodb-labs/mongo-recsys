@@ -2,20 +2,23 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<body onload="loadScroll()" onunload="saveScroll()">
+<body onload="loadScroll(); activateTab()" onunload="saveScroll()">
 
-	<div class="row" align="left">
+	<div class="container">
 
-		<div class="row" align="left">
-			<h1>Recommender</h1>
+		<div class="row">
+			<div class="span4">
+				<h1>Recommender</h1>
+			</div>
 		</div>
+
+		<br>
 
 		<%@include file="templates/navbar.jsp"%>
 
-		<h2>Your Favorite Films</h2>
 		<p>Check the box next to a film to remove it from your favorites.</p>
 
-		<div class="row">
+		<div class="text-left">
 			<!--  This part here prints all of the user's preferences. -->
 			<c:forEach items="${titles}" varStatus="loop">
 				<div>
@@ -77,6 +80,11 @@
 			$(window).scrollTop(tempScrollTop);
 		}
 	});
+
+	function activateTab() {
+		var homeTab = document.getElementById("home");
+		homeTab.className = "active";
+	}
 </script>
 
 <%@include file="templates/scroll.jsp"%>

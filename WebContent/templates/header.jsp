@@ -19,10 +19,6 @@ body {
 	padding-top: 40px;
 }
 
-.container {
-	width: 300px;
-}
-
 /* The white background content wrapper */
 .container>.content {
 	background-color: #fff;

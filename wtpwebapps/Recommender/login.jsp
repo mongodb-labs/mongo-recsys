@@ -11,7 +11,7 @@
 		<br>
 	</div>
 
-	<div class="container" id="loginbox">
+	<div class="container" id="loginbox" style="width: 300px">
 		<div class="content">
 			<div class="row">
 				<div class="login-form">
@@ -24,7 +24,8 @@
 							</div>
 						</fieldset>
 						<button class="btn btn-primary" type="submit">Sign In</button>
-						<button class="btn" type="button" onClick="unhide(); hideMsg(); hideLogin();"
+						<button class="btn" type="button"
+							onClick="unhide(); hideMsg(); hideLogin();"
 							id="displaynewuserbutton">New User?</button>
 
 					</form>
@@ -34,21 +35,23 @@
 		</div>
 	</div>
 
-	<div class="container" style="visibility: hidden" id="newuser">
+	<div class="container" style="visibility: hidden" style="width:300px" id="newuser">
 		<div class="content">
 			<div class="row">
 				<div class="login-form">
 					<form action="CreateUser" method="post">
 						<fieldset>
 							<div class="clearfix">
-								<input type="text" id="newfield" name="userid" placeholder="New Username"
+								<input type="text" id="newfield" name="userid"
+									placeholder="New Username"
 									style="border-color: black; border-style: solid; border-width: 2px;"
 									autofocus><br> <input type="text" name="realname"
 									placeholder="Real Name"
 									style="border-color: black; border-style: solid; border-width: 2px;">
 							</div>
 						</fieldset>
-						<button class="btn btn-primary" type="submit">Create Account</button>
+						<button class="btn btn-primary" type="submit">Create
+							Account</button>
 					</form>
 				</div>
 			</div>
@@ -59,6 +62,7 @@
 		function unhide() {
 			var hiddenDiv = document.getElementById('newuser');
 			hiddenDiv.style.visibility = 'visible';
+			hiddenDiv.style.width = '300px'; // Required for some browsers.
 			var field = document.getElementById('newfield');
 			field.focus();
 		}

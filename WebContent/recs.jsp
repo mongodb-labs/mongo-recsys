@@ -1,7 +1,7 @@
 <%@include file="templates/header.jsp"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<body>
+<body onload="activateTab()">
 
 	<div align="left">
 
@@ -18,4 +18,11 @@
 
 	</div>
 
-<%@include file="templates/footer.jsp"%>
+	<script type="text/javascript">
+		function activateTab() {
+			var recTab = document.getElementById("recommend");
+			recTab.className = "active";
+		}
+	</script>
+
+	<%@include file="templates/footer.jsp"%>
