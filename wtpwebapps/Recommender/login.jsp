@@ -41,16 +41,14 @@
 					<form action="CreateUser" method="post">
 						<fieldset>
 							<div class="clearfix">
-								<input type="text" name="userid" placeholder="New Username"
+								<input type="text" id="newfield" name="userid" placeholder="New Username"
 									style="border-color: black; border-style: solid; border-width: 2px;"
 									autofocus><br> <input type="text" name="realname"
 									placeholder="Real Name"
-									style="border-color: black; border-style: solid; border-width: 2px;"
-									autofocus>
+									style="border-color: black; border-style: solid; border-width: 2px;">
 							</div>
 						</fieldset>
-						<button class="btn btn-primary" type="submit">Create New
-							User</button>
+						<button class="btn btn-primary" type="submit">Create Account</button>
 					</form>
 				</div>
 			</div>
@@ -61,6 +59,8 @@
 		function unhide() {
 			var hiddenDiv = document.getElementById('newuser');
 			hiddenDiv.style.visibility = 'visible';
+			var field = document.getElementById('newfield');
+			field.focus();
 		}
 		function hideLogin() {
 			var login = document.getElementById('loginbox');
