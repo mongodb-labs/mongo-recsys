@@ -23,10 +23,10 @@
 									autofocus>
 							</div>
 						</fieldset>
-						<div style="display:inline; float:none">
+						<div style="display: inline; float: none">
 							<button class="btn btn-primary" type="submit"
-								style="width: 100px">Sign In</button>
-							<button style="width: 100px" class="btn" type="button"
+								style="width: 109px">Sign In</button>
+							<button style="width: 109px" class="btn" type="button"
 								onClick="unhide(); hideMsg(); hideLogin();"
 								id="displaynewuserbutton">New User?</button>
 						</div>
