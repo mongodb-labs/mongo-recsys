@@ -15,12 +15,15 @@
 
 		<%@include file="templates/navbar.jsp"%>
 
-		<h4 style="color:#C0C0C0">Films Recommended for You</h4>
-		
+		<h4 style="color: #C0C0C0">Films Recommended for You</h4>
+
 		<br>
-		
+
 		<c:forEach var="film" items="${films}">
-			<p>${film}</p>
+			<div class="container" style="width: 300px" align="left">
+				<div class="content">${film}</div>
+				<br>
+			</div>
 		</c:forEach>
 
 	</div>

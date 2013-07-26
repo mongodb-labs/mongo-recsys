@@ -137,7 +137,7 @@ public class Login extends HttpServlet {
 		DBCollection coll = db.getCollection(userCollection);
 		
 		// Get uniqueID from the request.
-		String uniqueID = request.getParameter("userid");
+		String uniqueID = request.getParameter(userIDField);
 		
 		// There's very little security in this program - it just checks the user's uniqueID.
 		QueryBuilder mainUserQuery = new QueryBuilder();

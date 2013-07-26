@@ -18,7 +18,7 @@
 					<form action="Login" method="post">
 						<fieldset>
 							<div class="clearfix">
-								<input type="text" name="userid" placeholder="Username"
+								<input type="text" name="unique_id" placeholder="Username"
 									style="border-color: black; border-style: solid; border-width: 2px;"
 									autofocus>
 							</div>
@@ -45,7 +45,7 @@
 					<form action="CreateUser" method="post">
 						<fieldset>
 							<div class="clearfix">
-								<input type="text" id="newfield" name="userid"
+								<input type="text" id="newfield" name="unique_id"
 									placeholder="New Username"
 									style="border-color: black; border-style: solid; border-width: 2px;"
 									autofocus><br> <input type="text" name="realname"

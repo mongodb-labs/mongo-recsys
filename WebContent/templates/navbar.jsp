@@ -7,14 +7,15 @@
 
 <div style="display: none">
 	<form action="Login" method="post" name="home">
-		<button id="b1" name="userid" type="submit" value="${unique_id}">
+		<button id="b1" name="unique_id" type="submit" value="${unique_id}">
 		</button>
 	</form>
-	<form action="Recommend" method="get" name="update">
+	<form action="Search" method="get" name="update">
 		<button id="b2" name="unique_id" type="submit" value="${unique_id}">
 		</button>
 	</form>
-	<form action="Recommend" method="post">
-		<button id="b3" name="unique_id" type="submit" value="${unique_id}"></button>
+	<form action="GetRecommendations" method="get" name="recommend">
+		<button id="b3" name="unique_id" type="submit" value="${unique_id}">
+		</button>
 	</form>
 </div>

@@ -61,7 +61,7 @@ public class CreateUser extends HttpServlet {
 		DBCollection coll = db.getCollection(userCollection);
 		
 		// Get unique user ID info from the request.
-		String uniqueID = request.getParameter("userid");
+		String uniqueID = request.getParameter("unique_id");
 		String fullName = request.getParameter("realname");
 	
 		// Check to see if the user's unique ID already exists. If not, create the new user.
