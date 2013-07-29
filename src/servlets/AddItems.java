@@ -111,7 +111,7 @@ public class AddItems extends HttpServlet {
 		ArrayList<String> plots = new ArrayList<String>();
 		ArrayList<Integer> idNumbers = new ArrayList<Integer>();
 		int counter = 0;
-				
+		
 		// Now we need to iterate over this collection.
 		for(int i = 0; i < objects.size(); i++) {
 			DBObject obj = (DBObject) objects.get(i).get("obj");
