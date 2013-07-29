@@ -10,13 +10,13 @@
 				<h1>Recommender</h1>
 			</div>
 		</div>
-		
+
 		<br>
 
 		<%@include file="templates/navbar.jsp"%>
 
 		<div>
-			<h4 style="color:#C0C0C0">Find New Favorites</h4>
+			<h4 style="color: #C0C0C0">Find New Favorites</h4>
 			<br>
 			<h5>Search by Genre</h5>
 			<br>
@@ -40,7 +40,8 @@
 				</select>
 				<h5>Search by Title</h5>
 				<br> <input type="text" name="title" autofocus>
-				<button type="submit" name="unique_id" value="${unique_id}">Search!</button>
+				<button class="btn" style="margin-bottom: 11px" type="submit"
+					name="unique_id" value="${unique_id}">Search!</button>
 			</form>
 
 			<!-- If the user had previously selected a value, select that. -->
@@ -64,34 +65,68 @@
 
 		</div>
 
-		<div align="left">
-			<form action="UpdateMovies" method="post">
+		<form action="UpdateMovies" method="post">
 
-				<c:if test="${not empty results}">
-					<button name="unique_id" type="submit" value="${unique_id}"
-						id="floatingbutton">
-						<p id="buttontext">+</p>
-					</button>
-				</c:if>
+			<c:if test="${not empty results}">
+				<button class="btn btn-primary" name="unique_id" type="submit"
+					value="${unique_id}">Add to Favorites</button>
+				<br>
+				<br>
+			</c:if>
 
-				<c:forEach items="${results}" varStatus="loop">
-					<div>
-						<input type="checkbox" name="movie" value="${ids[loop.index]}">${results[loop.index]}<br>
-					</div>
-					<br>
-				</c:forEach>
+			<div style="margin-left: -30px; height: 800px; overflow: auto">
 
-			</form>
-		</div>
+				<div class="row">
+					<c:forEach items="${results}" varStatus="loop">
+						<div class="span6">
+							<label for="${ids[loop.index]}" id="${ids[loop.index]}label"
+								class="tile" style="margin-left: 30px"> <!-- Hidden Checkbox -->
+								<input type="checkbox" style="display: none" name="movie"
+								value="${ids[loop.index]}" id="${ids[loop.index]}"
+								onchange="toggle(this.id)">
 
-		<script type="text/javascript">
-			function activateTab() {
-				var updateTab = document.getElementById("updatetab");
-				updateTab.className = "active";
-			}
-		</script>
+								<h5 style="color: white">${results[loop.index]}</h5> <br>
 
+								<div class="row">
+
+									<!--  Replace this with the actual picture. -->
+									<div class="span2">
+										<div class="crop">
+											<img src="${images[loop.index]}">
+										</div>
+									</div>
+
+									<!--  We will replace this with actual descriptions. -->
+									<div class="span3">
+										<div class="textblock">${plots[loop.index]}</div>
+									</div>
+
+								</div>
+							</label>
+						</div>
+					</c:forEach>
+				</div>
+
+			</div>
+		</form>
 	</div>
+
+	<script type="text/javascript">
+		function activateTab() {
+			var updateTab = document.getElementById("updatetab");
+			updateTab.className = "active";
+		}
+		function toggle(id) {
+			var checkbox = document.getElementById(id);
+			if (checkbox.checked == true) {
+				document.getElementById(id + 'label').style.backgroundColor = '#C41E3A';
+				document.getElementById(id + 'label').style.borderColor = 'black';
+			} else {
+				document.getElementById(id + 'label').style.backgroundColor = '#779ECB';
+				document.getElementById(id + 'label').style.borderColor = '#C0C0C0';
+			}
+		}
+	</script>
 
 </body>
 

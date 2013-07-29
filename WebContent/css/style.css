@@ -1,93 +1,67 @@
 body {
-	font-family: "Sabon", "SabonGreek";
-	font-size: 12pt;
-	text-align: center;
-	margin-left: 1cm;
+	padding-top: 40px;
 }
 
-h1 {
-	color: #0066FF;
-	text-align: left;
-}
-
-h2 {
-	color: #0066FF;
-	text-align: left;
-	font-size: 20pt;
-}
-
-h5 {
-	font-size: 20px;
-	color: #0066FF;
-}
-
-h6 {
-	font-size: 20px;
-	color: black;
-}
-
-h6 {
-	font-size: 18px;
-	color: black;
-}
-
-#smallheader {
-	color: #0066FF;
-}
-
-#moviebox {
-	padding: 10px;
+.container>.content {
+	background-color: #fff;
+	padding: 20px;
+	margin: 0 -20px;
+	-webkit-border-radius: 10px 10px 10px 10px;
+	-moz-border-radius: 10px 10px 10px 10px;
+	border-radius: 10px 10px 10px 10px;
+	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
 	border-style: solid;
-	border-width: 2px;
-	border-radius: 25px;
-	box-shadow: 5px 5px 5px #888888;
-	background-color: #0066FF;
-	color: white;
+	border-color: #000000;
 }
 
-#loginbar {
+.login-form {
+	margin-left: 65px;
+}
+
+legend {
+	margin-right: -50px;
+	font-weight: bold;
+	color: #404040;
+}
+
+.tile {
+	padding: 20px;
+	margin-bottom: 30px;
+	background-color: #779ECB;
+}
+
+.smalltile {
+	padding: 20px;
+	margin-bottom: 30px;
+	background-color: #779ECB;
+}
+
+.textblock {
+	background-color: white;
+	color:black;
+	font-weight: bold;
+	padding: 20px;
+	font-size:9pt;
+}
+
+/* Image Cropping */
+.crop {
+	align: center;
+	width: 200px;
+	height: 200px;
+	overflow: hidden;
+}
+
+.inner {
 	float: left;
-	padding-top: 3px;
-	padding-left: 5px;
-	padding-right: 5px;
-}
-
-#descriptor {
-	float: left;
-	padding-top: 7px;
-}
-
-#loginbutton {
-	float: left;
-	padding-top: -8px;
-}
-
-#navbar {
-	float: left;
-}
-
-#floatingbutton {
-	position: fixed;
-	bottom: 0px;
-	right: 20px;
-	width:100px;
-	height:100px;
-	font-size:100px;
-	vertical-align:middle;
-	text-align:center;
-	padding: 0px 0px 30px 0px;
-}
-
-#buttontext {
 	position: relative;
-	bottom: 22px;
-	color: #00CC00
+	left: 50%;
 }
 
-select {
-	font-size: 1.1em; /* Size of the text */
-	height: 41px; /* The height you want the <select> to be */
-	padding-top: 7px;
-	/* how far from the top you want the text to appear */
-	text-align: center;
+.crop img {
+	width: 100%;
+	display: block;
+	position: relative;
 }

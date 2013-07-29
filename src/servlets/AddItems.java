@@ -107,6 +107,8 @@ public class AddItems extends HttpServlet {
 		
 		// Set up all of our results in the checkbox form for being submitted to the .jsp
 		ArrayList<String> searchResults = new ArrayList<String>();
+		ArrayList<String> imgURLs = new ArrayList<String>();
+		ArrayList<String> plots = new ArrayList<String>();
 		ArrayList<Integer> idNumbers = new ArrayList<Integer>();
 		int counter = 0;
 				
@@ -117,6 +119,8 @@ public class AddItems extends HttpServlet {
 			// Add to the arrays.
 			searchResults.add(obj.get(itemName).toString());
 			idNumbers.add(Integer.parseInt(obj.get(itemIDField).toString()));
+			imgURLs.add(obj.get("img").toString());
+			plots.add(obj.get("plot").toString());
 			counter++;
 		}
 		
@@ -126,6 +130,8 @@ public class AddItems extends HttpServlet {
 				if(obj == null) break;
 				searchResults.add(obj.get(itemName).toString());
 				idNumbers.add(Integer.parseInt(obj.get(itemIDField).toString()));
+				imgURLs.add(obj.get("img").toString());
+				plots.add(obj.get("plot").toString());
 				counter++;
 			}
 		}
@@ -134,6 +140,8 @@ public class AddItems extends HttpServlet {
 		ArrayList<String> genres = getGenres(request);
 		
 		// Forward to the searching page.
+		request.setAttribute("images", imgURLs);
+		request.setAttribute("plots", plots);
 		request.setAttribute("genres", genres);
 		request.setAttribute("results", searchResults);
 		request.setAttribute("ids", idNumbers);

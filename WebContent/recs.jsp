@@ -19,12 +19,30 @@
 
 		<br>
 
-		<c:forEach var="film" items="${films}">
-			<div class="container" style="width: 300px" align="left">
-				<div class="content">${film}</div>
-				<br>
-			</div>
-		</c:forEach>
+		<div class="row">
+			<c:forEach var="film" items="${films}">
+				<div class="span6">
+					<div class="tile">
+						<h5 style="color: white">${film}</h5>
+						<br>
+						<div class="row">
+							<div class="span2">
+								<img src="http://bit.ly/18Hum1v">
+							</div>
+							<!--  Movie descriptions can go here. -->
+							<div class="span3">
+								<div class="textblock">In the future Jake a paraplegic war veteran
+									is brought to another planet Pandora which is inhabited by the
+									Na'vi a humanoid race with their own language and culture.
+									Those from Earth find themselves at odds with each other and
+									the local culture.</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</c:forEach>
+		</div>
 
 	</div>
 

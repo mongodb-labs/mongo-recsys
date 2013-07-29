@@ -16,25 +16,27 @@
 
 		<%@include file="templates/navbar.jsp"%>
 
-		<h4 style="color:#C0C0C0">Click Movie to Remove from Favorites</h4>
-		
+		<h4 style="color: #C0C0C0">Click Movie to Remove from Favorites</h4>
+
 		<br>
 
 		<div class="text-left">
 			<!--  This part here prints all of the user's preferences. -->
 			<c:forEach items="${titles}" varStatus="loop">
-				<div>
-					<c:choose>
-						<c:when test="${ids[loop.index] == -1}">
-							<h5>${titles[loop.index]}</h5>
-						</c:when>
-						<c:when test="${ids[loop.index] != -1}">
-							<input type="checkbox" name="movie" value="${ids[loop.index]}">
-							${titles[loop.index]}
-						</c:when>
-					</c:choose>
-				</div>
-				<br>
+				<c:choose>
+					<c:when test="${ids[loop.index] == -1}">
+						<h5>${titles[loop.index]}</h5>
+						<br>
+					</c:when>
+					<c:when test="${ids[loop.index] != -1}">
+
+						<label class="smalltile" for="${ids[loop.index]}">
+							<input id="${ids[loop.index]}" type="checkbox" style="display: none" name="movie" value="${ids[loop.index]}">
+							<h5 style="color: white">${titles[loop.index]}</h5>
+						</label>
+
+					</c:when>
+				</c:choose>
 			</c:forEach>
 
 			${message}
