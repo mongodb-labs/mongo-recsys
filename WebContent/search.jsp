@@ -1,19 +1,21 @@
 <%@include file="templates/header.jsp"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <body onload="activateTab()">
 
-	<div class="container">
+	<%@include file="templates/navbar-top.jsp"%>
 
+	<div class="container main">
 		<div class="row">
-			<div class="span4">
-				<h1>Recommender</h1>
+			<div class="span12">
+				<%@include file="templates/navbar.jsp"%>
 			</div>
 		</div>
 
-		<br>
+		<h4 class="muted">Click Movie to Remove from Favorites</h4>
 
-		<%@include file="templates/navbar.jsp"%>
+		<br>
 
 		<div>
 			<h4 style="color: #C0C0C0">Find New Favorites</h4>
@@ -80,13 +82,16 @@
 					<c:forEach items="${results}" varStatus="loop">
 						<div class="span6">
 							<label for="${ids[loop.index]}" id="${ids[loop.index]}label"
-								class="tile" style="margin-left: 30px"> <!-- Hidden Checkbox -->
+								class="tile"
+								style="margin-left: 30px; background-color: #8593ff;"> <!-- Hidden Checkbox -->
 								<input type="checkbox" style="display: none" name="movie"
 								value="${ids[loop.index]}" id="${ids[loop.index]}"
 								onchange="toggle(this.id)">
 
-								<h5 style="color: white">${results[loop.index]}</h5> <br>
-
+								<div class="titlediv">
+									<h2>${fn:toUpperCase(results[loop.index])}</h2>
+								</div>
+								
 								<div class="row">
 
 									<!--  Replace this with the actual picture. -->
@@ -127,7 +132,6 @@
 			}
 		}
 	</script>
-
 </body>
 
 <%@include file="templates/footer.jsp"%>

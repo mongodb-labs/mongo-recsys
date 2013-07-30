@@ -1,41 +1,38 @@
 <%@include file="templates/header.jsp"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <body onload="activateTab()">
 
-	<div class="container">
+	<%@include file="templates/navbar-top.jsp"%>
 
+	<div class="container main">
 		<div class="row">
-			<div class="span4">
-				<h1>Recommender</h1>
+			<div class="span12">
+				<%@include file="templates/navbar.jsp"%>
 			</div>
 		</div>
 
-		<br>
-
-		<%@include file="templates/navbar.jsp"%>
-
-		<h4 style="color: #C0C0C0">Films Recommended for You</h4>
-
-		<br>
+		<h4 class="muted">Films Recommended for You</h4>
 
 		<div class="row">
-			<c:forEach var="film" items="${films}">
+			<c:forEach var="film" items="${films}" varStatus="loop">
 				<div class="span6">
 					<div class="tile">
-						<h5 style="color: white">${film}</h5>
+						<div class="titlediv">
+							<h2>${fn:toUpperCase(film)}</h2>
+						</div>
 						<br>
+						
 						<div class="row">
 							<div class="span2">
-								<img src="http://bit.ly/18Hum1v">
+								<div class="crop">
+									<img src="${images[loop.index]}">
+								</div>
 							</div>
 							<!--  Movie descriptions can go here. -->
 							<div class="span3">
-								<div class="textblock">In the future Jake a paraplegic war veteran
-									is brought to another planet Pandora which is inhabited by the
-									Na'vi a humanoid race with their own language and culture.
-									Those from Earth find themselves at odds with each other and
-									the local culture.</div>
+								<div class="textblock">${plots[loop.index]}</div>
 							</div>
 						</div>
 

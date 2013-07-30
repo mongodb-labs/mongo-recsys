@@ -4,39 +4,38 @@
 
 <body onload="loadScroll(); activateTab()" onunload="saveScroll()">
 
-	<div class="container">
+	<%@include file="templates/navbar-top.jsp"%>
 
+	<div class="container main">
 		<div class="row">
-			<div class="span4">
-				<h1>Recommender</h1>
+			<div class="span12">
+				<%@include file="templates/navbar.jsp"%>
 			</div>
 		</div>
 
-		<br>
-
-		<%@include file="templates/navbar.jsp"%>
-
-		<h4 style="color: #C0C0C0">Click Movie to Remove from Favorites</h4>
+		<h4 class="muted">Click Movie to Remove from Favorites</h4>
 
 		<br>
 
 		<div class="text-left">
 			<!--  This part here prints all of the user's preferences. -->
 			<c:forEach items="${titles}" varStatus="loop">
-				<c:choose>
-					<c:when test="${ids[loop.index] == -1}">
-						<h5>${titles[loop.index]}</h5>
-						<br>
-					</c:when>
-					<c:when test="${ids[loop.index] != -1}">
+				<div>
+					<c:choose>
+						<c:when test="${ids[loop.index] == -1}">
+							<h5>${titles[loop.index]}</h5>
+						</c:when>
+						<c:when test="${ids[loop.index] != -1}">
 
-						<label class="smalltile" for="${ids[loop.index]}">
-							<input id="${ids[loop.index]}" type="checkbox" style="display: none" name="movie" value="${ids[loop.index]}">
-							<h5 style="color: white">${titles[loop.index]}</h5>
-						</label>
+							<label class="shortpanel" for="${ids[loop.index]}">
+								<input style="display:none" type="checkbox" id="${ids[loop.index]}" name="movie" value="${ids[loop.index]}">
+								${titles[loop.index]}
+							</label>
 
-					</c:when>
-				</c:choose>
+						</c:when>
+					</c:choose>
+				</div>
+				<br>
 			</c:forEach>
 
 			${message}
