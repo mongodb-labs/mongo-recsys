@@ -1,11 +1,10 @@
 package listeners;
 
+import static classes.Constants.mongoClient;
 import java.net.UnknownHostException;
-import static classes.Constants.*;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-
 import com.mongodb.MongoClient;
 
 /**

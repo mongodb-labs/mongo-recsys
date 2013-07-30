@@ -1,0 +1,1 @@
+Fixed all of the Eclipse issues - don't double include jstl in the build path and runtime.

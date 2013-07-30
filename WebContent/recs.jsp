@@ -14,6 +14,8 @@
 		</div>
 
 		<h4 class="muted">Films Recommended for You</h4>
+		
+		<br>
 
 		<div class="row">
 			<c:forEach var="film" items="${films}" varStatus="loop">
