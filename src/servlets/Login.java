@@ -88,9 +88,11 @@ public class Login extends HttpServlet {
 
 		// Run the aggregation.
 		AggregationOutput output = items.aggregate(match, group);
-		
+				
 		// Declare ArrayLists to store information on mainUser's movies.
 		ArrayList<String> titlesByGenre = new ArrayList<String>();
+		ArrayList<String> plots = new ArrayList<String>();
+		ArrayList<String> images = new ArrayList<String>();
 		ArrayList<Integer> idNumbers = new ArrayList<Integer>();
 		
 		for(DBObject obj : output.results()) {
@@ -102,6 +104,8 @@ public class Login extends HttpServlet {
 			 */
 			titlesByGenre.add(genre);
 			idNumbers.add(-1);
+			plots.add("nothing");
+			images.add("nothing");
 			
 			BasicBSONList movieids = (BasicBSONList) obj.get(itemIDField);
 			// Put the data into their respective ArrayLists.
@@ -109,6 +113,8 @@ public class Login extends HttpServlet {
 				int id = Integer.parseInt(movieids.get(i).toString());
 				idNumbers.add(id);
 				DBObject current = items.findOne(new BasicDBObject(itemIDField, id));
+				images.add(current.get("img").toString());
+				plots.add(current.get("plot").toString());
 				titlesByGenre.add(current.get("title").toString());
 			}
 		}
@@ -116,6 +122,8 @@ public class Login extends HttpServlet {
 		// Finish up by dispatching the request.
 		request.setAttribute(userIDField, unique_id);
 		request.setAttribute("titles", titlesByGenre);
+		request.setAttribute("images", images);
+		request.setAttribute("plots", plots);
 		request.setAttribute("ids", idNumbers);
 		request.getRequestDispatcher("home.jsp").forward(request, response);
 		

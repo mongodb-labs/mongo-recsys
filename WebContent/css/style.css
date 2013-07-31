@@ -1,4 +1,4 @@
-html {
+html#landing {
 	height: 100%;
 	background: url("../img/family_watching_tv.jpg") no-repeat center center
 		fixed;
@@ -10,8 +10,10 @@ html {
 
 body {
 	font-family: "PT Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	background: #f5f6f7;
 }
 
+/* Bootstrap Style Override */
 select,textarea,input[type="text"],input[type="password"],input[type="datetime"],input[type="datetime-local"],input[type="date"],input[type="month"],input[type="time"],input[type="week"],input[type="number"],input[type="email"],input[type="url"],input[type="search"],input[type="tel"],input[type="color"],.uneditable-input
 	{
 	border-radius: 0;
@@ -30,6 +32,10 @@ select,textarea,input[type="text"],input[type="password"],input[type="datetime"]
 	box-shadow: none;
 }
 
+.btn:hover,.btn:focus {
+	background: #c7ccd8;
+}
+
 .btn-primary {
 	color: #fff;
 	background: #72cf2e;
@@ -37,6 +43,89 @@ select,textarea,input[type="text"],input[type="password"],input[type="datetime"]
 
 .btn-primary:hover,.btn-primary:focus {
 	background: #60bd1e;
+}
+
+.modal {
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+}
+
+.modal,.modal.fade.in {
+	top: 8%;
+}
+
+.modal>form {
+	margin-bottom: 0;
+}
+
+.modal-header {
+	background: #eee;
+	padding: 8px 15px;
+	border-bottom: none;
+}
+
+.modal-header h3 {
+	font-family: "PT Sans Narrow", "PT Sans", "Helvetica Neue", Helvetica,
+		Arial, sans-serif;
+	font-size: 24px;
+}
+
+.modal-header .close {
+	margin-top: 5px;
+	font-size: 24px;
+	color: #333;
+	text-shadow: none;
+	opacity: 0.6;
+	filter: alpha(opacity = 60);
+}
+
+.modal-header .close:hover,.modal-header .close:focus {
+	opacity: 1;
+	filter: alpha(opacity = 100);
+}
+
+.modal-footer {
+	background-color: #eee;
+	border-top: none;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+
+.nav-tabs {
+	border-bottom: 2px solid #26282d;
+}
+
+.nav-tabs>li {
+	margin-bottom: 0;
+}
+
+.nav-tabs>li>a {
+	border: none;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+}
+
+.nav-tabs>.active>a,.nav-tabs>.active>a:hover,.nav-tabs>.active>a:focus
+	{
+	color: #fff;
+	cursor: default;
+	background-color: #26282d;
+	border: none;
+}
+
+.nav>li>a {
+	color: #333;
+}
+
+.nav>li>a:hover,.nav>li>a:focus {
+	background-color: #ebebed;
+	color: #333;
 }
 
 .main {
@@ -53,7 +142,7 @@ body#splash {
 }
 
 .navbar .navbar-inner {
-	background: none;
+	background: #26282d;
 	border: none;
 	box-shadow: none;
 }
@@ -88,6 +177,7 @@ body#splash {
 
 body#splash .navbar-inverse .navbar-inner {
 	padding: 15px 0 0 20px;
+	background: none;
 }
 
 body#splash .navbar .brand {
@@ -157,36 +247,76 @@ h1.tagline {
 	line-height: 31px;
 }
 
-.nav-tabs {
-	border-bottom: 2px solid #eee;
+.navbar .logout {
+	display: block;
+	padding: 10px;
+	color: #fff;
+	text-decoration: none;
 }
 
-.nav-tabs>li {
-	margin-bottom: 0;
+.navbar .logout:hover {
+	text-decoration: underline;
 }
 
-.nav-tabs>li>a {
-	border: none;
-	-webkit-border-radius: 0;
-	-moz-border-radius: 0;
-	border-radius: 0;
+/* Movie List CSS */
+/* This extends Bootstrap's built-in Media List component at http://getbootstrap.com/2.3.2/components.html#media */
+.movie-list li.movie {
+	width: 30%;
+	padding: 10px 1%;
+	margin-right: 1%;
+	float: left;
+	cursor: pointer;
+	height:275px;
 }
 
-.nav-tabs>.active>a,.nav-tabs>.active>a:hover,.nav-tabs>.active>a:focus
-	{
-	color: #222;
-	cursor: default;
-	background-color: #eee;
-	border: none;
+.movie-list li.movie#iframe-movie {
+	width: 45%;
+	padding: 10px 1%;
+	margin-right: 1%;
+	float: left;
+	cursor: pointer;
+	height:275px;
 }
 
-.nav>li>a {
-	color: #333;
+.movie-list .media:first-child {
+	margin-top: 15px;
 }
 
-.nav>li>a:hover,.nav>li>a:focus {
-	background-color: #f7f7f7;
-	color: #333;
+.movie-list li.movie:hover {
+	background: #ebebed;
+}
+
+.movie-list li.movie.selected {
+	background: #ebebed url("../img/icon-check.png") 97% 5% no-repeat;
+	background-size: 18px 14px;
+}
+
+.movie-list a.movie-poster {
+	display: block;
+	width: 128px;
+	height: 192px;
+	overflow: hidden;
+}
+
+.movie-list li.movie p {
+	font-size: 13px;
+}
+
+/* Movie Modal (and list in modal) */
+#addMoviesModal {
+	width: 700px;
+	margin-left: -350px;
+}
+
+#addMoviesModal .movie-list li.movie {
+	width: 47%;
+	height: 96px;
+	overflow: hidden
+}
+
+#addMoviesModal .movie-list a.movie-poster {
+	width: 64px;
+	height: 96px;
 }
 
 .titlediv {
@@ -217,4 +347,10 @@ h1.tagline {
 	height: 200px;
 	overflow: hidden;
 	align: center;
+}
+
+#addMoviesFrame {
+	height: 400px;
+	width: 100%;
+	overflow: hidden;
 }
