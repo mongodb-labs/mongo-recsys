@@ -12,14 +12,17 @@
 				<%@include file="templates/navbar.jsp"%>
 			</div>
 		</div>
+		
+		<h4 class="muted">Add New / Click to Remove</h4>
+		
+		<br>
+		
 		<div class="row">
 			<div class="span12">
 				<a class="btn btn-primary" id="addMovies">Add Favorites</a>
 			</div>
 		</div>
-
-		<h4 class="muted">Click Movie to Remove from Favorites</h4>
-
+		
 		<br>
 
 		<div class="row">
@@ -87,11 +90,6 @@
 		</div>
 		<iframe id="addMoviesFrame" seamless="seamless"
 			src="Search?unique_id=${unique_id}"></iframe>
-		<div class="modal-footer">
-			<a href="#" class="btn"
-				onclick="window.setInterval('location.reload(true)', 400);"
-				data-dismiss="modal">Cancel</a>
-		</div>
 	</div>
 
 </body>

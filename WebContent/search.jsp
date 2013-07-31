@@ -4,9 +4,7 @@
 
 <body onload="activateTab()">
 
-	<div style="padding-top:5px;">
-		<h4 style="color: #C0C0C0">Find New Favorites</h4>
-		<br>
+	<div style="padding-top:20px;">
 		<!-- Making the values persist on submit. -->
 		<script type="text/javascript">
 			function cache() {
@@ -28,6 +26,14 @@
 			<input type="text" name="title" autofocus>
 			<button class="btn btn-primary" style="margin-bottom: 11px"
 				type="submit" name="unique_id" value="${unique_id}">Search!</button>
+				
+				<c:if test="${not empty results}">
+			<button class="btn btn-primary" type="button"
+				style="color: white; background-color: #FF0000; margin-bottom:11px;" onclick="document.getElementById('add').click()">Add to Favorites</button>
+
+			</c:if>
+				
+				
 		</form>
 
 		<!-- If the user had previously selected a value, select that. -->
@@ -49,19 +55,14 @@
 
 		${message}
 
-	</div>
 
 	<form action="UpdateMovies" method="post">
 
-		<c:if test="${not empty results}">
 			<button class="btn btn-primary"
-				style="color: white; background-color: #FF0000" name="unique_id"
-				type="submit" value="${unique_id}">Add to Favorites</button>
-			<br>
-			<br>
-		</c:if>
+				style="display: none" name="unique_id"
+				type="submit" value="${unique_id}" id="add">Add to Favorites</button>
 
-		<div style="height: 800px; overflow: auto">
+		<div style="height: 400px; overflow: auto">
 
 			<div class="row">
 			
@@ -105,6 +106,9 @@
 		</div>
 	</form>
 	</div>
+	
+		</div>
+	
 
 	<script type="text/javascript">
 		function activateTab() {
