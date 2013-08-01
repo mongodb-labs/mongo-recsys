@@ -25,11 +25,6 @@ RUNNING THE PROGRAM
 
 3. Open up an instance of the mongo shell.
 
-4. Enable text search in the mongo shell using the following commands:
-	
-	use admin
-	db.runCommand({ setParameter : 1 , textSearchEnabled: true })
-
 4. Run the following commands in the mongo shell:
 	
 	use daviddb
