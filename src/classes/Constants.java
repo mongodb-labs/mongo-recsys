@@ -16,6 +16,6 @@ public final class Constants {
 	public static final String itemCategory = "genre"; // Identify what type of item we're dealing with.
 	
 	public static final String mongoClient = "mongo"; // The name of the MongoClient.
-	public static final int numberOfRecommendations = 6; // Relatively small number to ensure good recs.
+	public static final int numberOfRecommendations = 9; // Relatively small number to ensure good recs.
 	
 }
