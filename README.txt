@@ -18,7 +18,10 @@ RUNNING THE PROGRAM
 	
 	Leave mongod running. It's required for Recommender to interact with MongoDB.
 
-2. Open up a new tab in your terminal and import the sample data using the following command: mongoimport -d daviddb -c movies --type csv --fields movie_id,title,genre,img,plot movie_dataset.csv
+2. Open up a new tab in your terminal and import the sample data using the following two commands:
+
+	mongoimport -d daviddb -c movies --type csv --fields movie_id,title,genre,img,plot movie_dataset.csv
+	mongoimport -d daviddb -c users small_user_dataset.json --jsonArray
 
 3. Open up an instance of the mongo shell.
 

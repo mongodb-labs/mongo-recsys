@@ -1,5 +1,67 @@
 {
-	"_id" : ObjectId("51db4539267fadbd26f8a8cf"),
+	"favorites" : [
+		20,
+		273,
+		42,
+		117,
+		44
+	],
+	"unique_id" : "ssong",
+	"user" : "Shihui Song"
+}
+{
+	"favorites" : [
+		167,
+		9,
+		14,
+		30,
+		44,
+		3,
+		647,
+		24
+	],
+	"unique_id" : "dalabi",
+	"user" : "Daniel Alabi"
+}
+{
+	"user" : "Vincent Barr",
+	"unique_id" : "vbarr",
+	"favorites" : [
+		5,
+		28,
+		38,
+		54,
+		20,
+		4,
+		11,
+		3,
+		29,
+		22
+	]
+}
+{
+	"favorites" : [
+		14,
+		23,
+		127,
+		345,
+		3,
+		283,
+		221
+	],
+	"unique_id" : "edaniels",
+	"user" : "Eric Daniels"
+}
+{
+	"favorites" : [
+		42,
+		44,
+		87
+	],
+	"unique_id" : "sjackson",
+	"user" : "Spencer Jackson"
+}
+{
 	"favorites" : [
 		4,
 		3,
@@ -48,7 +110,6 @@
 	"user" : "David Khavari"
 }
 {
-	"_id" : ObjectId("51db4539267fadbd26f8a8d3"),
 	"favorites" : [
 		3,
 		33,
@@ -87,7 +148,6 @@
 	"user" : "Tyler Jones"
 }
 {
-	"_id" : ObjectId("51db4539267fadbd26f8a8d2"),
 	"favorites" : [
 		104,
 		163,
@@ -123,7 +183,6 @@
 	"user" : "Max Hirschhorn"
 }
 {
-	"_id" : ObjectId("51db4539267fadbd26f8a8d0"),
 	"favorites" : [
 		3,
 		167,
@@ -164,7 +223,6 @@
 	"user" : "EJ Bensing"
 }
 {
-	"_id" : ObjectId("51db4539267fadbd26f8a8d1"),
 	"favorites" : [
 		1,
 		398,
