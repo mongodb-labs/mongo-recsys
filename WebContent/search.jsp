@@ -87,7 +87,7 @@
 								</a>
 
 								<div class="media-body">
-									<h4 class="media-heading">${fn:toUpperCase(results[loop.index])}</h4>
+									<h4 class="media-heading">${results[loop.index]}</h4>
 									<p>${plots[loop.index]}</p>
 								</div>
 																

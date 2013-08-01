@@ -1,4 +1,4 @@
-<%@include file="templates/header.jsp"%>
+<%@include file="templates/header-landing.jsp"%>
 
 <body id="splash">
   <div class="navbar navbar-inverse navbar-static-top">
