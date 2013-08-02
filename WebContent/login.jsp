@@ -15,7 +15,7 @@
         <div class="login-box" id="loginbox">
           <div class="login-heading clearfix">
             <h2>Sign In</h2>
-            <p class="login-switch">Need an account? <a href="#" onclick="unhide(); hideMsg(); hideLogin();">Create New Account</a></p>
+            <p class="login-switch">Need an account? <a href="#" onclick="unhideCreate(); hideMsg(); hideLogin(); return false">Create New Account</a></p>
           </div>
           
           <form class="form-horizontal login-form" action="Login" method="post">
@@ -36,7 +36,7 @@
         <div class="login-box" id="newuser" style="display:none;">
           <div class="login-heading clearfix">
             <h2>Create Account</h2>
-            <p class="login-switch">Already have an account? <a href="#" onclick="">Log In</a></p>
+            <p class="login-switch">Already have an account? <a href="#" onclick="hideCreate(); unhideLogin(); return false">Log In</a></p>
           </div>
           <form class="form-horizontal login-form" action="CreateUser" method="post">
             <div class="control-group">
@@ -63,15 +63,25 @@
   </div>
 
   <script type="text/javascript">
-    function unhide() {
+    function unhideCreate() {
       var hiddenDiv = document.getElementById('newuser');
       hiddenDiv.style.display = 'block';
       var field = document.getElementById('newfield');
       field.focus();
     }
+    function hideCreate() {
+        var hiddenDiv = document.getElementById('newuser');
+        hiddenDiv.style.display = 'none';
+    }
     function hideLogin() {
       var login = document.getElementById('loginbox');
       login.style.display = 'none';
+    }
+    function unhideLogin() {
+    	var login = document.getElementById('loginbox');
+    	login.style.display = 'block';
+    	var field = document.getElementById('userid');
+    	field.focus();
     }
     function hideMsg() {
       var msgdiv = document.getElementById('messagediv');
