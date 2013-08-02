@@ -97,7 +97,7 @@ public class GetRecommendations extends HttpServlet {
 	}
 
 	/*
-	 * Helper String: identifyTopMovies
+	 * Helper ArrayList<String>: identifyTopMovies
 	 * --------------------------------
 	 * Finds all of the top movies for the given user using aggregation.
 	 */
