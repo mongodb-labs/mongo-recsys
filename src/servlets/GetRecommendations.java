@@ -8,19 +8,15 @@ import static classes.Constants.numberOfRecommendations;
 import static classes.Constants.userCollection;
 import static classes.Constants.userIDField;
 import static classes.Constants.userPrefs;
-
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.bson.types.BasicBSONList;
-
 import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
