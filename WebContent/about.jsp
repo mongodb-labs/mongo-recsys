@@ -56,7 +56,7 @@
 			<div class="span7">
 				<h4>Extension</h4>
 				<p>
-					Plugging in highly specialized and optimized recommendation
+					Plugging highly specialized and optimized recommendation
 					algorithms into Recommender is relatively simple, and we encourage
 					it. <br>
 					<br> The algorithm is executed in GetRecommendations.java,
@@ -67,10 +67,10 @@
 					bringing in an entirely new recommendation algorithm. <br>
 					<br> Smaller modifications can easily be inserted into the
 					pipeline (eg: add another field to a $project command or $match by
-					multiple criteria). <br>
+					more criteria). <br>
 					<br> Larger modifications might include swapping out large
 					portions of the pipeline for more complex code. One possible
-					situation could be simply using the pipeline to filter out users
+					use case could be simply using the pipeline to filter out users
 					who don't share any common movies, then executing the new algorithm
 					over that set. <br>
 					<br> The primary takeaways from this section are:
@@ -81,6 +81,10 @@
 						Recommender in its current state, you will have to make
 						modifications.</li>
 				</ul>
+			</div>
+			<div class="span7">
+				<h4>Installation</h4>
+				<p>The installation instructions can be found <a href="https://github.com/10gen-interns/mongo-recsys">here</a>.</p>
 			</div>
 			<div class="span7" style="margin-bottom: 50px">
 				<h4>Contact</h4>
