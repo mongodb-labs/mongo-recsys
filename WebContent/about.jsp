@@ -34,7 +34,7 @@
 			</div>
 			<div class="span7">
 				<h4>Scope</h4>
-				<h5 class="muted">What Recommender Is</h5>
+				<h5 class="muted">Recommender is...</h5>
 				<ul>
 					<li>A simple example of a recommendation engine using MongoDB.</li>
 					<li>A helpful starting point for developers looking to build
@@ -44,7 +44,7 @@
 					<li>An overview of how MongoDB can be used in practice.</li>
 
 				</ul>
-				<h5 class="muted">What Recommender Isn't</h5>
+				<h5 class="muted">Recommender is NOT...</h5>
 				<ul>
 					<li>A drag-and-drop, no modification solution for individuals
 						and enterprises.</li>

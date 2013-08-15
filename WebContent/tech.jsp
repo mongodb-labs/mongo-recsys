@@ -29,7 +29,7 @@
 			</div>
 			<br><br>
 			<div class="span7">
-				<img src="http://oi41.tinypic.com/95x8bl.jpg">
+				<img src="http://oi44.tinypic.com/14ctnc3.jpg">
 				<p style="margin-top: 50px; margin-bottom: 50px">
 				The aggregation pipeline is the heart of this application. The aggregation
 				algorithm we use has several steps, but is quite simple. In essence, we start

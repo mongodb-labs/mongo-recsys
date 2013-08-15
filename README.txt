@@ -2,13 +2,22 @@ Recommender README
 
 Welcome to Recommender!
 
+APPLICATION WEBSITE
+
+This is a fully-deployed example of Recommender.
+
+If you're looking to use the application with no installation required,
+simply visit the following link:
+
+www.mongodbrecommender.com
+
 QUICK INSTALLATION
 
-1. Download Recommender.war from Recommender's GitHub page.
+1. Git pull the application from this page.
 
-2. Install Apache Tomcat v7.0, or continue if you already have: http://tomcat.apache.org/download-70.cgi
+2. Install Apache Tomcat 7, or continue if you already have: http://tomcat.apache.org/download-70.cgi
 
-3. Put Recommender.war into Tomcat's webapps directory, which you can find here: tomcat/TOMCAT_VERSION/libexec/webapps
+3. Compile the app into a .war file, either using an IDE or the command line, and put Recommender-Repair.war into Tomcat's webapps directory, which you can find here: tomcat/TOMCAT_VERSION/libexec/webapps
 
 4. Install the latest version of MongoDB or continue if you already have: http://www.mongodb.org/downloads
 
@@ -25,7 +34,7 @@ RUNNING THE PROGRAM
 
 3. Open up an instance of the mongo shell.
 
-4. Run the following commands in the mongo shell:
+4. Run the following commands in the mongo shell, to enable text search:
 	
 	use daviddb
 	db.movies.ensureIndex("title" : "text")
@@ -34,7 +43,7 @@ RUNNING THE PROGRAM
 
 	./startup.sh
 
-6. Visit login page of Recommender in a browser (which should by default be at: localhost:8080/Recommender/login.jsp), and enjoy the site!
+6. Visit login page of Recommender in a browser (which should by default be at the following URL, given that you have named your .war file Recommender: localhost:8080/Recommender/login.jsp), and enjoy the site!
 
 BUILDING AND MODIFYING THE SOURCE CODE
 
