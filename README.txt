@@ -2,15 +2,6 @@ Recommender README
 
 Welcome to Recommender!
 
-APPLICATION WEBSITE
-
-This is a fully-deployed example of Recommender.
-
-If you're looking to use the application with no installation required,
-simply visit the following link:
-
-www.mongodbrecommender.com
-
 QUICK INSTALLATION
 
 1. Git pull the application from this page.
